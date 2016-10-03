@@ -243,7 +243,12 @@ Polymer({
 	ref.once("value", function(snapshot) {//CHANGING EVERY TIME IT CHANGES
 		var alljson=snapshot.val();
 		var regUsers=Object.keys(alljson["regUsers"])
+		if(alljson["uid"][_this.yourJSON.id]["regUsersShown"]!=null){
 		var regUsersShown=Object.keys(alljson["uid"][_this.yourJSON.id]["regUsersShown"])
+	}
+	else{
+		var regUsersShown=[];
+	}
 		console.log("Registed users:")
 		console.log(regUsers)
 
