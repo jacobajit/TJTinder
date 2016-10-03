@@ -243,10 +243,18 @@ Polymer({
 	ref.once("value", function(snapshot) {//CHANGING EVERY TIME IT CHANGES
 		var alljson=snapshot.val();
 		var regUsers=Object.keys(alljson["regUsers"])
+		var regUsersShown=Object.keys(alljson["regUsersShown"])
 		console.log("Registed users:")
 		console.log(regUsers)
 
-		_this.id = regUsers[Math.floor(Math.random() * regUsers.length)];
+		go=false;
+		while(go==false){
+			_this.id = regUsers[Math.floor(Math.random() * regUsers.length)];
+			k=regUsersShown.indexOf(_this.id);
+			if(k==-1){
+				go=true
+			}
+		}
 		
 		_this.profileurl="https://ion.tjhsst.edu/api/profile/"+_this.id;
 		_this.imgurl="https://ion.tjhsst.edu/api/profile/"+_this.id+"/picture";
@@ -255,23 +263,23 @@ Polymer({
 		console.log(_this.id)
 
 
-	//add to registered users shown
-	var regUsersShown = new Firebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/regUsersShown")
+		//add to registered users shown
+		var regUsersShown = new Firebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/regUsersShown")
 
 
-	var updateObjRegUser={}
-	updateObjRegUser[_this.id]=true
-	console.log("")
-	console.log("Update INFO: ")
-	console.log(updateObjRegUser)
-	console.log("")
-	regUsersShown.update(updateObjRegUser);
+		var updateObjRegUser={}
+		updateObjRegUser[_this.id]=true
+		console.log("")
+		console.log("Update INFO: ")
+		console.log(updateObjRegUser)
+		console.log("")
+		regUsersShown.update(updateObjRegUser);
 
 
-	//add to shown users
-	updatedShown={}
-	updatedShown[_this.id]=true
-	new Firebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/shown").update(updatedShown)
+		//add to shown users
+		updatedShown={}
+		updatedShown[_this.id]=true
+		new Firebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/shown").update(updatedShown)
 
 	}, function (errorObject) {
 		console.log("The read failed: " + errorObject.code);
