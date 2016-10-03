@@ -72,9 +72,9 @@
 		<iron-ajax auto="" url="https://ion.tjhsst.edu/api/profile" headers="{{loginauth}}" handle-as="json" on-response="loadAppMatches" debounce-duration="300" last-response="{{yourJSON}}"></iron-ajax>
 		<template is="dom-if" if="{{iddefined}}">
 
-			<iron-ajax auto="" url="{{profileurl}}" headers="{{loginauth}}" handle-as="json" on-response="handleResponse" debounce-duration="300" last-response="{{theirJSON}}"></iron-ajax>
+			<iron-ajax auto="" url="{{profileurl}}" headers="{{loginauth}}" handle-as="json" on-error="pickIdFromAll" on-response="handleResponse" debounce-duration="300" last-response="{{theirJSON}}"></iron-ajax>
 
-			<iron-ajax auto="" url="{{imgurl}}" headers="{{loginauth}}" last-response="{{imgret}}" handle-as="blob" on-response="handleImgResponse" debounce-duration="300"></iron-ajax>
+			<iron-ajax auto="" url="{{imgurl}}" headers="{{loginauth}}" last-response="{{imgret}}" handle-as="blob" on-response="handleImgResponse" on-error="pickIdFromAll" debounce-duration="300"></iron-ajax>
 		</template>
 		<template is="dom-if" if="{{readyForShownAjax}}">
 
@@ -283,11 +283,17 @@ Polymer({
 
 	},
 	pickIdFromAll: function(e){
-		console.log("Picking from all all users")
-		this.id=Math.floor(Math.random() * (33503 - 31416)) + 31416
-		this.profileurl="https://ion.tjhsst.edu/api/profile/"+this.id;
-		this.imgurl="https://ion.tjhsst.edu/api/profile/"+this.id+"/picture";
-		this.iddefined=true
+
+		var go=false
+		while(go==false){
+			//while the url exists if not pick a new url
+			console.log("Picking from all all users")
+			this.id=Math.floor(Math.random() * (33974 - 31957)) + 31957
+			this.profileurl="https://ion.tjhsst.edu/api/profile/"+this.id;
+			this.imgurl="https://ion.tjhsst.edu/api/profile/"+this.id+"/picture";
+			this.iddefined=true
+
+		}
 
 
 
