@@ -210,6 +210,10 @@ Polymer({
 		console.log(this.imgObjectUrl)
 		// document.getElementById("imgdiv").appendChild(image);
 		this.picturedefined=true
+		var spinners = event.target.parentElement.querySelectorAll('paper-spinner, paper-spinner-lite');
+        Array.prototype.forEach.call(spinners, function(spinner) {
+          spinner.active = !spinner.active;
+        });
 	},
 	shownreceived: function(e){//implement shown checking
 		var yourid=this.yourJSON.id
