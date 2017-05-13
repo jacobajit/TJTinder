@@ -2,7 +2,7 @@
 	<title>TJTinder</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<script src="http://polygit.org/components//webcomponentsjs/webcomponents.min.js"></script>
+	<script src="webcomponents-lite.min.js"></script>
 	<script src="require.js"></script>
 	<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
@@ -127,6 +127,7 @@
 
 </template>
 <script>
+window.addEventListener('WebComponentsReady', function(e) {
 Polymer({
 
 	is: 'app-main',
@@ -405,6 +406,7 @@ Polymer({
 
 
 
+});
 });
 </script>
 </dom-module>
