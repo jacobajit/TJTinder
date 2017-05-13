@@ -326,7 +326,22 @@ Polymer({
 	},
 	pickIdFromAll: function(e){
 		console.log("Picking from all all users")
-		this.id=Math.floor(Math.random() * (33503 - 31416)) + 31416
+		var yourGrade=this.yourJSON.grade.number;
+		if(yourGrade==12){
+			this.id=Math.floor(Math.random() * (32533 - 31957)) + 31957  31957 to 32533
+		}
+		else if(yourGrade==11){
+			this.id=Math.floor(Math.random() * (33018 - 32535)) + 32535  32535 to 33018
+		}
+		else if(yourGrade==10){
+			this.id=Math.floor(Math.random() * (33504 - 33018)) + 33018  33018 to 33504
+		}
+		else if(yourGrade==9){
+			this.id=Math.floor(Math.random() * (33974 - 33504)) + 33504  33504 to 33974
+		}
+		else{
+			this.id=Math.floor(Math.random() * (33503 - 31416)) + 31416
+		}
 		this.profileurl="https://ion.tjhsst.edu/api/profile/"+this.id;
 		this.imgurl="https://ion.tjhsst.edu/api/profile/"+this.id+"/picture";
 		this.iddefined=true
