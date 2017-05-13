@@ -21,6 +21,7 @@
 	<link rel="import" href="https://polygit.org/components/paper-toolbar/paper-toolbar.html">
 	<link rel="import" href="https://polygit.org/components/iron-a11y-keys/iron-a11y-keys.html">
 	<link rel="import" href="https://polygit.org/components/paper-styles/paper-styles.html">
+	<link rel="import" href="https://polygit.org/components/paper-spinner/paper-spinner.html">
 
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
@@ -97,6 +98,7 @@
 
 			<iron-ajax auto="" url="{{shownURL}}" handle-as="json" on-response="shownreceived" debounce-duration="300" last-response="{{shownJSON}}"></iron-ajax>
 		</template>
+		<paper-spinner active>...</paper-spinner>
 		<template is="dom-if" if="{{picturedefined}}">
 			
 			<div style="width:100%; margin:0 auto;text-align:center">
