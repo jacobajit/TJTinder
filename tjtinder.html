@@ -39,6 +39,19 @@
 		paper-toggle-button {
 			--paper-toggle-button-label-color:"#FFFFFF";
 		}
+
+.demo-card-wide.mdl-card {
+  width: 512px;
+}
+.demo-card-wide > .mdl-card__title {
+  color: #fff;
+  height: 176px;
+  background: url('../assets/demos/welcome_card.jpg') center / cover;
+}
+.demo-card-wide > .mdl-card__menu {
+  color: #fff;
+}
+
 	</style>
 
 
@@ -88,19 +101,7 @@
 			
 			<div style="width:100%; margin:0 auto;text-align:center">
 <!-- Wide card with share menu button -->
-<!-- <style>
-.demo-card-wide.mdl-card {
-  width: 512px;
-}
-.demo-card-wide > .mdl-card__title {
-  color: #fff;
-  height: 176px;
-  background: url('../assets/demos/welcome_card.jpg') center / cover;
-}
-.demo-card-wide > .mdl-card__menu {
-  color: #fff;
-}
-</style>
+
 
 <div class="demo-card-wide mdl-card mdl-shadow--2dp">
   <div class="mdl-card__title">
@@ -120,7 +121,7 @@
       <i class="material-icons">share</i>
     </button>
   </div>
-</div> -->
+</div>
 				
 					<paper-card elevation="5" heading="{{theirJSON.display_name}}" class="pink">
 						<div>
