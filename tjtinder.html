@@ -116,21 +116,12 @@
     </a>
   </div>
   <div class="mdl-card__menu">
-    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-      <i class="material-icons">share</i>
-    </button>
+    							<paper-button on-tap="like" style="background-color:#FF765A;color: #fff;">Yah</paper-button>
+							<paper-button on-tap="dislike" style="background-color:#FF765A;color: #fff;">Nah</paper-button>
   </div>
 </div>
 				
-					<paper-card elevation="5" heading="{{theirJSON.display_name}}" class="pink">
-						<div>
-							{{theirJSON.display_name}}
-						</div>
-						<div class="card-actions">
-							<paper-button on-tap="like" style="background-color:#FF765A;color: #fff;">Yah</paper-button>
-							<paper-button on-tap="dislike" style="background-color:#FF765A;color: #fff;">Nah</paper-button>
-						</div>
-					</paper-card>
+
 			</div>
 	</template>
 
