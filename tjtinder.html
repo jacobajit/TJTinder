@@ -12,15 +12,15 @@
 	</script>
 
 	
-	<link rel="import" href="http://polygit.org/components/polymer/polymer.html">
-	<link rel="import" href="http://polygit.org/components/iron-ajax/iron-ajax.html">
-	<link rel="import" href="http://polygit.org/components/paper-button/paper-button.html">
-	<link rel="import" href="http://polygit.org/components/paper-input/paper-input.html">
-	<link rel="import" href="http://polygit.org/components/paper-card/paper-card.html">
-	<link rel="import" href="http://polygit.org/components/paper-toggle-button/paper-toggle-button.html">
-	<link rel="import" href="http://polygit.org/components/paper-toolbar/paper-toolbar.html">
-	<link rel="import" href="http://polygit.org/components/iron-a11y-keys/iron-a11y-keys.html">
-	<link rel="import" href="http://polygit.org/components/paper-styles/paper-styles.html">
+	<link rel="import" href="https://polygit.org/components/polymer/polymer.html">
+	<link rel="import" href="https://polygit.org/components/iron-ajax/iron-ajax.html">
+	<link rel="import" href="https://polygit.org/components/paper-button/paper-button.html">
+	<link rel="import" href="https://polygit.org/components/paper-input/paper-input.html">
+	<link rel="import" href="https://polygit.org/components/paper-card/paper-card.html">
+	<link rel="import" href="https://polygit.org/components/paper-toggle-button/paper-toggle-button.html">
+	<link rel="import" href="https://polygit.org/components/paper-toolbar/paper-toolbar.html">
+	<link rel="import" href="https://polygit.org/components/iron-a11y-keys/iron-a11y-keys.html">
+	<link rel="import" href="https://polygit.org/components/paper-styles/paper-styles.html">
 
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
@@ -103,9 +103,9 @@
 <!-- Wide card with share menu button -->
 
 
-<div class="demo-card-wide mdl-card mdl-shadow--2dp" style="margin: auto; width: 50%;">
+<div class="demo-card-wide mdl-card mdl-shadow--2dp" style="margin: auto;">
   <div class="mdl-card__title">
-    <h2 class="mdl-card__title-text">{{theirJSON.display_name}}</h2>
+    <h2 class="mdl-card__title-text" style="margin:auto;">{{theirJSON.display_name}}</h2>
   </div>
   <div class="mdl-card__supporting-text">
     <img src="{{imgObjectUrl}}">
@@ -442,7 +442,7 @@ Polymer({
 </paper-input>
 <br>
 <br>
-<paper-button on-tap="login" style="background-color:#FF765A;color: #fff;"> Log In </paper-button>
+<paper-button on-tap="login" style="background-color:#FF765A;color: #fff;width:100%;"> Log In </paper-button>
 </template>
 
 <script>
@@ -595,7 +595,7 @@ Polymer({
 		<br>
 
 
-		<div id="main">
+		<div id="main" style="max-width:300px;margin:100px auto 0 auto;">
 			<app-login id="loginid">
 		</app-login>
 		</div>
