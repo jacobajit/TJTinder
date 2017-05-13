@@ -98,7 +98,9 @@
 
 			<iron-ajax auto="" url="{{shownURL}}" handle-as="json" on-response="shownreceived" debounce-duration="300" last-response="{{shownJSON}}"></iron-ajax>
 		</template>
-		<paper-spinner active>...</paper-spinner>
+		<div style="width:100%; margin:0 auto;text-align:center">
+			<paper-spinner active>...</paper-spinner>
+		</div>
 		<template is="dom-if" if="{{picturedefined}}">
 			
 			<div style="width:100%; margin:0 auto;text-align:center">
