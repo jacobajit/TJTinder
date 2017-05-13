@@ -431,7 +431,7 @@ Polymer({
 </template>
 
 <script>
-
+window.addEventListener('WebComponentsReady', function(e) {
 Polymer({
 	is:"app-login",
 
@@ -471,6 +471,7 @@ Polymer({
 					}
 
 				});
+});
 </script>
 </dom-module>
 
@@ -506,6 +507,7 @@ Polymer({
 
 	</template>
 	<script>
+	window.addEventListener('WebComponentsReady', function(e) {
 	Polymer({
 
 		is: 'app-matches',
@@ -549,6 +551,7 @@ Polymer({
 
 
 	});
+	});
 	</script>
 
 </dom-module>
@@ -589,8 +592,10 @@ Polymer({
 
 	</template>
 	<script>
+	window.addEventListener('WebComponentsReady', function(e) {
 		Polymer({
 			is: 'app-super'
+		});
 		});
 	</script>
 </dom-module>
