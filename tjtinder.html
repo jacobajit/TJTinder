@@ -188,6 +188,7 @@
 
 						attached:function(){
 							var url = window.location.href;
+							console.log(url);
 							access_token = url.match(/\#(?:access_token)\=([\S\s]*?)\&/)[1];
 							console.log(access_token);
 
