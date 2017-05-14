@@ -91,7 +91,9 @@
 					}
 
 				</style>
+				<template is="dom-if" if="{{readyForProf}}">
 				<iron-ajax auto="" url="https://ion.tjhsst.edu/api/profile" headers="{{loginauth}}" handle-as="json" on-response="loadAppMatches" debounce-duration="300" last-response="{{yourJSON}}"></iron-ajax>
+				</template>
 				<template is="dom-if" if="{{iddefined}}">
 
 					<iron-ajax auto="" url="{{profileurl}}" headers="{{loginauth}}" handle-as="json" on-error="pickIdFromAll" on-response="handleResponse" debounce-duration="300" last-response="{{theirJSON}}"></iron-ajax>
@@ -182,6 +184,11 @@
 								type:Boolean,
 								value:false,
 								notify:true
+							},
+							readyForProf:{
+								type:Boolean.
+								value:false,
+								notify:false
 							}
 
 						},
@@ -197,6 +204,8 @@
 							loginauthattr["Authorization"]="Bearer "+ access_token
 
 							this.loginauth = JSON.stringify(loginauthattr);
+
+							this.readyForProf=true;
 						},
 
 
