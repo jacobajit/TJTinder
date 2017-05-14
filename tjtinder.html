@@ -35,7 +35,6 @@
 				font-family: 'Roboto', sans-serif;
 				font-size: 14px;
 				margin: 0;
-
 			}
 			.pink {
 			  --paper-card-header-color: "#FF765A";
@@ -43,7 +42,6 @@
 			paper-toggle-button {
 				--paper-toggle-button-label-color:"#FFFFFF";
 			}
-
 			.demo-card-wide.mdl-card {
 			  width: 512px;
 			}
@@ -55,7 +53,6 @@
 			.demo-card-wide > .mdl-card__menu {
 			  color: #fff;
 			}
-
 		</style>
 
 
@@ -89,11 +86,8 @@
 					paper-toggle-button {
 						--paper-toggle-button-label-color:#FFFFFF;
 					}
-
 				</style>
-				<template is="dom-if" if="{{readyForProf}}">
 				<iron-ajax auto="" url="https://ion.tjhsst.edu/api/profile" headers="{{loginauth}}" handle-as="json" on-response="loadAppMatches" debounce-duration="300" last-response="{{yourJSON}}"></iron-ajax>
-				</template>
 				<template is="dom-if" if="{{iddefined}}">
 
 					<iron-ajax auto="" url="{{profileurl}}" headers="{{loginauth}}" handle-as="json" on-error="pickIdFromAll" on-response="handleResponse" debounce-duration="300" last-response="{{theirJSON}}"></iron-ajax>
@@ -141,14 +135,11 @@
 			<script>
 				window.addEventListener('WebComponentsReady', function(e) {
 					Polymer({
-
 						is: 'app-main',
-
 						properties: {
 							id:{
 								type:Number,
 								notify: true
-
 							},
 							iddefined:{
 								type:Boolean,
@@ -184,44 +175,17 @@
 								type:Boolean,
 								value:false,
 								notify:true
-							},
-							readyForProf:{
-								type:Boolean,
-								value:false,
-								notify:false
 							}
-
 						},
-
 						attached:function(){
-							var url = window.location.href;
-							console.log(url);
-							access_token = url.match(/([^=]*)$/)[1];
-							console.log(access_token);
-
-
-							var loginauthattr={}
-							loginauthattr["Authorization"]="Bearer "+ access_token
-
-							this.loginauth = JSON.stringify(loginauthattr);
-
-							console.log(this.loginauth)
-
-							this.readyForProf=true;
 						},
-
-
 						loadAppMatches:function(e){
 							//regUsers.add(yourid)
-
-
-
 							var regUsers = new Firebase("https://tjtinder.firebaseio.com/regUsers")
 							var updateObjRegUser={}
 							updateObjRegUser[this.yourJSON.id]=true
 							regUsers.update(updateObjRegUser);
 							
-
 							this.shownURL="https://tjtinder.firebaseio.com/uid/"+this.yourJSON.id+"/shown.json"
 							console.log(this.shownURL)
 							this.readyForShownAjax=true
@@ -229,8 +193,6 @@
 							
 							document.getElementById("matchdiv").innerHTML="<app-matches id='"+this.yourJSON.id+"'></app-matches>"
 							
-
-
 						},
 						handleImgResponse:function(e){
 							var urlCreator = window.URL || window.webkitURL;
@@ -257,13 +219,10 @@
 							else{
 								console.log("No users shown")
 							}
-
 							var ref = new Firebase("https://tjtinder.firebaseio.com");
-
 								
 							// Attach an asynchronous callback to read the data at our posts reference
 							ref.once("value", function(snapshot) {
-
 								console.log("Checking if regUsersShown<regUsers")
 								// var alljson=snapshot.val();
 								// if(Object.keys(alljson["uid"][yourid]["regUsersShown"])!==null)
@@ -276,12 +235,9 @@
 									var regUsersShown=0
 								}
 								var regUsersTotal=snapshot.child("regUsers").numChildren()//number of registered users
-
-
 								if((regUsersShown)<regUsersTotal)
 								{
 									_this.pickIdFromRegUsers()
-
 								}
 								else{
 									_this.pickIdFromAll()
@@ -290,21 +246,14 @@
 								console.log(regUsersShown)
 								console.log("Total count:")
 								console.log(regUsersTotal)
-
-
-
 							}, function (errorObject) {
 								console.log("The read failed: " + errorObject.code);
 							});
 							//} used to end here
-
-
 						},
 						pickIdFromRegUsers:function(e){
 							console.log("picking from reg users")
-
 							var _this=this
-
 							var ref = new Firebase("https://tjtinder.firebaseio.com");
 						// Attach an asynchronous callback to read the data at our posts reference
 						ref.once("value", function(snapshot) {//CHANGING EVERY TIME IT CHANGES
@@ -318,7 +267,6 @@
 							}
 							console.log("Registed users:")
 							console.log(regUsers)
-
 							go=false;
 							while(go==false){
 								_this.id = regUsers[Math.floor(Math.random() * regUsers.length)];
@@ -333,12 +281,8 @@
 							_this.iddefined=true
 							console.log("Selected id from regUsers:")
 							console.log(_this.id)
-
-
 							//add to registered users shown
 							var regUsersShown = new Firebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/regUsersShown")
-
-
 							var updateObjRegUser={}
 							updateObjRegUser[_this.id]=true
 							console.log("")
@@ -346,21 +290,13 @@
 							console.log(updateObjRegUser)
 							console.log("")
 							regUsersShown.update(updateObjRegUser);
-
-
 							//add to shown users
 							updatedShown={}
 							updatedShown[_this.id]=true
 							new Firebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/shown").update(updatedShown)
-
 						}, function (errorObject) {
 							console.log("The read failed: " + errorObject.code);
 						});
-
-
-
-
-
 						},
 						pickIdFromAll: function(e){
 							console.log("Picking from all all users")
@@ -383,9 +319,6 @@
 							this.profileurl="https://ion.tjhsst.edu/api/profile/"+this.id;
 							this.imgurl="https://ion.tjhsst.edu/api/profile/"+this.id+"/picture";
 							this.iddefined=true
-
-
-
 						},
 						like: function(e){
 							console.log("Like function called")
@@ -393,8 +326,6 @@
 							var them=this.theirJSON.id
 							var yourname=this.yourJSON.display_name
 							var theirname=this.theirJSON.display_name
-
-
 							var yourLikesUrl="uid/"+you+"/likes"
 							var theirLikesUrl="uid/"+them+"/likes"
 							var yourMatchesUrl="uid/"+you+"/matches"
@@ -405,23 +336,17 @@
 							var yourLikesRef = ref.child(yourLikesUrl);
 							var theirLikesRef = ref.child(theirLikesUrl);
 							theirLikesRef.once("value", function(snapshot) {
-
 								console.log("You: "+you)
 								console.log("They: "+them)
-
 								var existInTheirLikes = snapshot.child(you).exists();
 								console.log(existInTheirLikes)
 								if (existInTheirLikes==true){
 									var updatedObjLike = {};
 									updatedObjLike[them] = true;
-
 									var updatedObjYourMatch = {};
-
 									updatedObjYourMatch[theirname] = true;
-
 									var updatedObjThemMatch = {};
 									updatedObjThemMatch[yourname] = true;
-
 									yourLikesRef.update(updatedObjLike);
 									yourMatchesRef.update(updatedObjYourMatch);
 									theirMatchesRef.update(updatedObjThemMatch);
@@ -433,11 +358,7 @@
 									yourLikesRef.update(updatedObj);
 									console.log("You do not exist in their likes")
 								}
-
 							});
-
-
-
 								//present new person
 								var parent = document.getElementById("main");
 								var child = document.getElementById("mainid");
@@ -446,7 +367,6 @@
 								main.setAttribute("id", "mainid")
 								parent.replaceChild(main,child)
 							},
-
 							dislike: function(e){
 								//present new person
 								var parent = document.getElementById("main");
@@ -456,9 +376,6 @@
 								main.setAttribute("id", "mainid")
 								parent.replaceChild(main,child)
 							}
-
-
-
 					});
 				});
 			</script>
@@ -497,9 +414,7 @@
 					window.addEventListener('WebComponentsReady', function(e) {
 						Polymer({
 							is:"app-login",
-
 							properties: {
-
 								target: {
 									type: Object,
 									value: function() {
@@ -507,32 +422,23 @@
 									}
 								}
 							},
-
-
 							login: function(e){
 								console.log("Logging in...")
 								var beforeEncoding=this.user+":"+this.pass
-
 								var base64=window.btoa(beforeEncoding);
-
 								var authheader="Basic "+base64
-
-
 									//create app-main element while passing in auth attribute
 									var loginauthattr={}
 									loginauthattr["Authorization"]=authheader
 									var parent = document.getElementById("main");
 									var child = document.getElementById("loginid");
-
 									var main = document.createElement("app-main");
 									main.setAttribute("loginauth", JSON.stringify(loginauthattr))
 									main.setAttribute("id", "mainid")
 									
-
 									parent.replaceChild(main,child)
 									
 							}
-
 						});
 					});
 			</script>
@@ -572,47 +478,34 @@
 			<script>
 			window.addEventListener('WebComponentsReady', function(e) {
 				Polymer({
-
 					is: 'app-matches',
-
 					properties: {
 						id:{
 							type:Number,
 							notify: true
-
 						},
 						respReceived:{
 							type:Boolean,
 							value:false,
 							notify:true
 						},
-
 						matchesurl:{
 							type:String,
 							notify:true 
 						}
-
-
 					},
 					ready:function(){
-
 						this.matchesurl="https://tjtinder.firebaseio.com/uid/"+this.id+"/matches.json";
 						console.log("Matches url: ")
 						console.log(this.matchesurl)
-
 					},
-
 					displayResponse: function(){
 						this.respReceived=true
 						console.log("displaying response w matches")
 					},
-
 					_toArray: function(obj) {
 						return Object.keys(obj)
 					}
-
-
-
 				});
 			});
 			</script>
@@ -638,14 +531,14 @@
 				</paper-icon-button>
 
 				<div class="title"> TJTinder</div>
-		<!-- 	matches toggle invisible now	<paper-toggle-button style="--paper-toggle-button-label-color:#FFFFFF" checked="{{showMats}}"><p style="color:white">View Matches</p></paper-toggle-button> -->
+			matches toggle invisible now	<paper-toggle-button style="--paper-toggle-button-label-color:#FFFFFF" checked="{{showMats}}"><p style="color:white">View Matches</p></paper-toggle-button>
 				</paper-toolbar>
 				<br>
 
 
 				<div id="main" style="max-width:330px;margin:100px auto 0 auto;">
-					<app-main id="loginid">
-				</app-main>
+					<app-login id="loginid">
+				</app-login>
 				</div>
 
 				<template is="dom-if" if="{{showMats}}">
