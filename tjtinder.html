@@ -203,7 +203,7 @@
 							var loginauthattr={}
 							loginauthattr["Authorization"]="Bearer "+ access_token
 
-							this.loginauth = JSON.stringify(loginauthattr);
+							this.loginauth["Authorization"] = "Bearer "+ access_token;
 
 							console.log(this.loginauth)
 
