@@ -88,9 +88,7 @@
 		paper-toggle-button {
 			--paper-toggle-button-label-color:#FFFFFF;
 		}
-		paper-button{
-			margin:0 0em;
-		}
+
 	</style>
 		<iron-ajax auto="" url="https://ion.tjhsst.edu/api/profile" headers="{{loginauth}}" handle-as="json" on-response="loadAppMatches" debounce-duration="300" last-response="{{yourJSON}}"></iron-ajax>
 		<template is="dom-if" if="{{iddefined}}">
@@ -450,6 +448,13 @@ Polymer({
 <dom-module id="app-login">
 
 <template>
+
+	<style is="custom-style">
+		paper-button{
+			margin:0 0em;
+		}
+	</style>
+
 	<paper-input label="Ion Username" value="{{user}}"></paper-input>
 	<iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="login"></iron-a11y-keys>
 	<paper-input label="Ion Password" type="password" value="{{pass}}" id="passid"> 
