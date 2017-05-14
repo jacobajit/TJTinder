@@ -1,0 +1,127 @@
+
+<html>
+<head>
+		<title>TJTinder</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="webcomponents-lite.min.js"></script>
+		<script src="require.js"></script>
+		<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+		<meta name="theme-color" content="#FF765A">
+		<link rel="manifest" href="manifest.json">
+		<script src="swregistration.js"> 
+		</script>
+
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="/favicon.ico" type="image/x-icon">
+		
+		<link rel="import" href="https://polygit.org/components/polymer/polymer.html">
+		<link rel="import" href="https://polygit.org/components/paper-button/paper-button.html">
+		<link rel="import" href="https://polygit.org/components/paper-toolbar/paper-toolbar.html">
+		<link rel="import" href="https://polygit.org/components/iron-a11y-keys/iron-a11y-keys.html">
+		<link rel="import" href="https://polygit.org/components/paper-styles/paper-styles.html">
+
+
+		
+		<style is="custom-style">
+			html{
+				font-family: 'Roboto', sans-serif;
+				font-size: 14px;
+				margin: 0;
+
+			}
+			.pink {
+			  --paper-card-header-color: "#FF765A";
+			}		
+			paper-toggle-button {
+				--paper-toggle-button-label-color:"#FFFFFF";
+			}
+
+			.demo-card-wide.mdl-card {
+			  width: 512px;
+			}
+			.demo-card-wide > .mdl-card__title {
+			  color: #fff;
+			  height: 176px;
+			  background: url('../assets/demos/welcome_card.jpg') center / cover;
+			}
+			.demo-card-wide > .mdl-card__menu {
+			  color: #fff;
+			}
+
+		</style>
+
+
+
+
+
+
+	</head>
+	<body>
+		<dom-module id="app-login">
+
+			<template>
+
+
+				<paper-button style="background-color:#FF765A;color: #fff;width:100%;"> <a href="https://ion.tjhsst.edu/oauth/authorize?client_id=ySHTIuQ6Hmn2oyJXY8nHtJTRU6unUdny00N3nZAL&response_type=token">Log In with Ion</a> </paper-button>
+				<br>
+				<br>
+				<a href="faq.html">Learn more</a>
+			</template>
+
+				<script>
+					window.addEventListener('WebComponentsReady', function(e) {
+						Polymer({
+							is:"app-login",
+
+							properties: {
+
+								target: {
+									type: Object,
+									value: function() {
+										return this.$.passid;
+									}
+								}
+							},
+
+
+
+						});
+					});
+			</script>
+		</dom-module>
+
+		<dom-module id="app-super">
+			<template>
+
+				<paper-toolbar style="background-color:#FF765A">
+				<paper-icon-button icon="arrow-back" onclick="goHome()">
+				</paper-icon-button>
+
+				<div class="title"> TJTinder</div>
+		<!-- 	matches toggle invisible now	<paper-toggle-button style="--paper-toggle-button-label-color:#FFFFFF" checked="{{showMats}}"><p style="color:white">View Matches</p></paper-toggle-button> -->
+				</paper-toolbar>
+				<br>
+
+
+				<div id="main" style="max-width:330px;margin:100px auto 0 auto;">
+					<app-login id="loginid">
+					</app-login>
+				</div>
+
+
+
+			</template>
+			<script>
+				window.addEventListener('WebComponentsReady', function(e) {
+					Polymer({
+						is: 'app-super'
+					});
+				});
+			</script>
+		</dom-module>
+	<app-super>
+	</app-super>
+	</body>
+</html>

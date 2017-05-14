@@ -1,1 +1,1 @@
-<?php header( 'Location: /tjtinder.html' ) ;  ?>
+<?php header( 'Location: /login.html' ) ;  ?>
