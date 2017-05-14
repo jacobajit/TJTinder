@@ -192,6 +192,16 @@
 
 						loadAppMatches:function(e){
 							//regUsers.add(yourid)
+
+							var url = window.location.href;
+							access_token = url.match(/\#(?:access_token)\=([\S\s]*?)\&/)[1];
+
+
+							var loginauthattr={}
+							loginauthattr["Authorization"]="Bearer "+ access_token
+
+							this.loginauth = JSON.stringify(loginauthattr);
+
 							var regUsers = new Firebase("https://tjtinder.firebaseio.com/regUsers")
 							var updateObjRegUser={}
 							updateObjRegUser[this.yourJSON.id]=true
@@ -620,8 +630,8 @@
 
 
 				<div id="main" style="max-width:330px;margin:100px auto 0 auto;">
-					<app-login id="loginid">
-				</app-login>
+					<app-main id="loginid">
+				</app-main>
 				</div>
 
 				<template is="dom-if" if="{{showMats}}">
