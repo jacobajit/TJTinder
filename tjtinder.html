@@ -88,6 +88,9 @@
 		paper-toggle-button {
 			--paper-toggle-button-label-color:#FFFFFF;
 		}
+		paper-button{
+			margin:0;
+		}
 	</style>
 		<iron-ajax auto="" url="https://ion.tjhsst.edu/api/profile" headers="{{loginauth}}" handle-as="json" on-response="loadAppMatches" debounce-duration="300" last-response="{{yourJSON}}"></iron-ajax>
 		<template is="dom-if" if="{{iddefined}}">
