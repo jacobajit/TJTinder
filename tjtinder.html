@@ -187,20 +187,22 @@
 						},
 
 						attached:function(){
-						},
-
-
-						loadAppMatches:function(e){
-							//regUsers.add(yourid)
-
 							var url = window.location.href;
 							access_token = url.match(/\#(?:access_token)\=([\S\s]*?)\&/)[1];
+							console.log(access_token);
 
 
 							var loginauthattr={}
 							loginauthattr["Authorization"]="Bearer "+ access_token
 
 							this.loginauth = JSON.stringify(loginauthattr);
+						},
+
+
+						loadAppMatches:function(e){
+							//regUsers.add(yourid)
+
+
 
 							var regUsers = new Firebase("https://tjtinder.firebaseio.com/regUsers")
 							var updateObjRegUser={}
