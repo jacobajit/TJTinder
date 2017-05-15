@@ -70,6 +70,7 @@ app.all("/api/*", function(req, res) {
         uri: req.path,
         baseUrl: "https://ion.tjhsst.edu",
         method: req.method,
+        encoding: null,
         form: {
             "format": "json",
             "access_token": req.session.access_token
