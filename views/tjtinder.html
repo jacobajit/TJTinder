@@ -138,8 +138,11 @@
 
 
 			</template>
-            <script>
+                <script>
+                var userid = "<%= userid %>";
                 var firebaseToken = "<%= firebase_token %>";
+
+                console.log("Current User ID: " + userid);
 
                 function createFirebase(path) {
                     var fb = new Firebase(path);
@@ -308,7 +311,7 @@
 
 
 							}, function (errorObject) {
-								console.log("The read failed: " + errorObject.code);
+								console.log("The read failed: " + JSON.stringify(errorObject));
 							});
 							//} used to end here
 

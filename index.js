@@ -56,7 +56,7 @@ app.get("/", function(req, res) {
         res.render("login.html", { login_url: login_url });
     }
     else {
-        res.render("tjtinder.html", { firebase_token: req.session.firebase_token });
+        res.render("tjtinder.html", { firebase_token: req.session.firebase_token, userid: req.session.uid });
     }
 });
 
