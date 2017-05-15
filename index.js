@@ -50,6 +50,45 @@ app.get("/", function(req, res) {
     }
 });
 
+app.all("/api/*", function(req, res) {
+    console.log("API Request: " + req.path + " (" + req.method + ")");
+    if (!req.session.access_token) {
+        console.log("Access Token: None");
+        res.type("application/json");
+        res.write(JSON.stringify({error: "Not Logged In"}));
+        res.end();
+        return;
+    }
+    console.log("Access Token: " + req.session.access_token);
+    if (!req.path.startsWith("/api/profile")) {
+        res.type("application/json");
+        res.write(JSON.stringify({error: "Method Not Allowed"}));
+        res.end();
+        return;
+    }
+    request({
+        uri: req.path,
+        baseUrl: "https://ion.tjhsst.edu",
+        method: req.method,
+        form: {
+            "format": "json",
+            "access_token": req.session.access_token
+        }
+    }, function(err, resp, body) {
+        if (err) {
+            console.log("API Error: " + err);
+            res.type("application/json");
+            res.write(JSON.stringify({error: "Server Error"}));
+            res.end();
+            return;
+        }
+        res.type(resp.headers["content-type"]);
+        res.write(body);
+        res.end();
+        return;
+    });
+});
+
 app.get("/logout", function(req, res) {
     req.session.destroy();
     res.redirect("/");

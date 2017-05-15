@@ -92,7 +92,7 @@
 
 				</style>
 				<template is="dom-if" if="{{readyForProf}}">
-				<iron-ajax auto="" url="https://ion.tjhsst.edu/api/profile" headers="{{loginauth}}" handle-as="json" on-response="loadAppMatches" debounce-duration="300" last-response="{{yourJSON}}"></iron-ajax>
+				<iron-ajax auto="" url="/api/profile" headers="{{loginauth}}" handle-as="json" on-response="loadAppMatches" debounce-duration="300" last-response="{{yourJSON}}"></iron-ajax>
 				</template>
 				<template is="dom-if" if="{{iddefined}}">
 
@@ -330,8 +330,8 @@
 								}
 							}
 							
-							_this.profileurl="https://ion.tjhsst.edu/api/profile/"+_this.id;
-							_this.imgurl="https://ion.tjhsst.edu/api/profile/"+_this.id+"/picture";
+							_this.profileurl="/api/profile/"+_this.id;
+							_this.imgurl="/api/profile/"+_this.id+"/picture";
 							_this.iddefined=true
 							console.log("Selected id from regUsers:")
 							console.log(_this.id)
@@ -382,8 +382,8 @@
 							else{
 								this.id=Math.floor(Math.random() * (33503 - 31416)) + 31416
 							}
-							this.profileurl="https://ion.tjhsst.edu/api/profile/"+this.id;
-							this.imgurl="https://ion.tjhsst.edu/api/profile/"+this.id+"/picture";
+							this.profileurl="/api/profile/"+this.id;
+							this.imgurl="/api/profile/"+this.id+"/picture";
 							this.iddefined=true
 
 
