@@ -58,7 +58,7 @@ app.get("/", function(req, res) {
         res.render("login.html", { login_url: login_url });
     }
     else {
-        res.render("tjtinder.html");
+        res.render("tjtinder.html", { firebase_token: req.session.firebase_token });
     }
 });
 
@@ -129,7 +129,17 @@ app.get("/login", function(req, res) {
             req.session.refresh_token = token.token.refresh_token;
             req.session.access_token = token.token.access_token;
             console.log("Auth successful! Token: " + JSON.stringify(token));
-            res.redirect("/");
+            apiRequest("/api/profile", "GET", token.token.access_token, function(body, type) {
+                var info = JSON.parse(body);
+                req.session.uid = info.id;
+                req.session.username = info.ion_username;
+                req.session.name = info.display_name;
+
+                admin.auth().createCustomToken(req.session.username, {id: info.id, sex: info.sex, grade: info.graduation_year}).then(function(token) {
+                    req.session.firebase_token = token;
+                    res.redirect("/");
+                });
+            });
         });
     }
 });
