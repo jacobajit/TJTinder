@@ -1,18 +1,24 @@
 var express = require("express");
 var request = require("request");
-
+var session = require("express-session");
 var simpleoauth2 = require("simple-oauth2");
 
 var app = express();
-
-app.use(express.static("static"));
-app.engine("html", require("ejs").renderFile);
 
 // client type: confidential
 // authorization grant type: authorization-code
 
 var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
+
+app.use(session({
+    secret: client_secret,
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(express.static("static"));
+app.engine("html", require("ejs").renderFile);
 
 var oauth = simpleoauth2.create({
     client: {
@@ -36,7 +42,12 @@ if (!client_id || !client_secret) {
 }
 
 app.get("/", function(req, res) {
-    res.render("login.html", { login_url: login_url });
+    if (!req.session.access_token) {
+        res.render("login.html", { login_url: login_url });
+    }
+    else {
+        res.render("tjtinder.html");
+    }
 });
 
 app.get("/login", function(req, res) {
@@ -54,7 +65,10 @@ app.get("/login", function(req, res) {
             }
 
             const token = oauth.accessToken.create(result);
+            req.session.refresh_token = token.token.refresh_token;
+            req.session.access_token = token.token.access_token;
             console.log("Auth successful! Token: " + JSON.stringify(token));
+            res.redirect("/");
         });
     }
 });
