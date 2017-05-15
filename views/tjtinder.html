@@ -275,7 +275,7 @@
 								console.log("No users shown")
 							}
 
-							var ref = createFirebase("https://tjtinder.firebaseio.com");
+							var ref = createFirebase("https://tjtinder.firebaseio.com/uid/" + yourid);
 
 								
 							// Attach an asynchronous callback to read the data at our posts reference
@@ -284,29 +284,32 @@
 								console.log("Checking if regUsersShown<regUsers")
 								// var alljson=snapshot.val();
 								// if(Object.keys(alljson["uid"][yourid]["regUsersShown"])!==null)
-								if(snapshot.child("uid").child(yourid).hasChild("regUsersShown"))
+								if(snapshot.hasChild("regUsersShown"))
 								{
 								// var regUsersShown=Object.keys(alljson["uid"][yourid]["regUsersShown"]).length//number of registered users shown
-								var regUsersShown=snapshot.child("uid").child(yourid).child("regUsersShown").numChildren()//number of registered users shown
+								var regUsersShown=snapshot.child("regUsersShown").numChildren()//number of registered users shown
 								}
 								else{
 									var regUsersShown=0
-								}
-								var regUsersTotal=snapshot.child("regUsers").numChildren()//number of registered users
+                                }
+                                createFirebase("https://tjtinder.firebaseio.com/regUsers").once("value", function(s2) {
+                                    var regUsersTotal=s2.numChildren();//number of registered users
 
+                                    if((regUsersShown)<regUsersTotal)
+                                    {
+                                        _this.pickIdFromRegUsers()
 
-								if((regUsersShown)<regUsersTotal)
-								{
-									_this.pickIdFromRegUsers()
-
-								}
-								else{
-									_this.pickIdFromAll()
-								}
-								console.log("Shown count:")
-								console.log(regUsersShown)
-								console.log("Total count:")
-								console.log(regUsersTotal)
+                                    }
+                                    else{
+                                        _this.pickIdFromAll()
+                                    }
+                                    console.log("Shown count:")
+                                    console.log(regUsersShown)
+                                    console.log("Total count:")
+                                    console.log(regUsersTotal)
+                                }, function(errorObject) {
+                                    console.error("regUsers read failed: " + JSON.stringify(errorObject));
+                                });
 
 
 
