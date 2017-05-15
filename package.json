@@ -1,0 +1,25 @@
+{
+  "name": "tjtinder",
+  "version": "1.0.0",
+  "description": "TJTinder",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.15.2",
+    "firebase-token-generator": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacobajit/TJTinder.git"
+  },
+  "author": "Jacob Ajit",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jacobajit/TJTinder/issues"
+  },
+  "homepage": "https://github.com/jacobajit/TJTinder#readme"
+}
