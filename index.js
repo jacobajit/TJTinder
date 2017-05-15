@@ -2,7 +2,7 @@ var express = require("express");
 var request = require("request");
 var session = require("express-session");
 var simpleoauth2 = require("simple-oauth2");
-var admin = require("firebase-admin");
+var FirebaseTokenGenerator = require("firebase-token-generator");
 
 var app = express();
 
@@ -12,6 +12,7 @@ var app = express();
 var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
 var firebase_auth = process.env.FIREBASE_AUTH;
+var firebase_secret = process.env.FIREBASE_SECRET;
 
 app.use(session({
     secret: client_secret,
@@ -23,15 +24,12 @@ if (!client_id || !client_secret) {
     console.warning("No client ID or client secret set!");
 }
 
-if (!firebase_auth) {
+if (!firebase_auth && !firebase_secret) {
     console.warning("No firebase authentication set!");
 }
 
 
-admin.initializeApp({
-    credential: admin.credential.cert(JSON.parse(firebase_auth)),
-    databaseURL: "https://tjtinder.firebaseio.com"
-});
+var tokenGenerator = new FirebaseTokenGenerator(firebase_secret);
 
 app.use(express.static("static"));
 app.engine("html", require("ejs").renderFile);
@@ -135,10 +133,10 @@ app.get("/login", function(req, res) {
                 req.session.username = info.ion_username;
                 req.session.name = info.display_name;
 
-                admin.auth().createCustomToken(req.session.username, {id: info.id, sex: info.sex, grade: info.graduation_year}).then(function(token) {
-                    req.session.firebase_token = token;
-                    res.redirect("/");
-                });
+                var token = tokenGenerator.createToken({ uid: info.ion_username, id: info.id, sex: info.sex });
+
+                req.session.firebase_token = token;
+                res.redirect("/");
             });
         });
     }

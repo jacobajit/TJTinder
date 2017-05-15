@@ -141,6 +141,16 @@
             <script>
                 var firebaseToken = "<%= firebase_token %>";
 
+                function createFirebase(path) {
+                    var fb = new Firebase(path);
+                    fb.authWithCustomToken(firebaseToken, function(err, data) {
+                        if (err) {
+                            console.error(err);
+                        }
+                    });
+                    return fb;
+                }
+
 				window.addEventListener('WebComponentsReady', function(e) {
 					Polymer({
 
@@ -220,7 +230,7 @@
 
 
 
-							var regUsers = new Firebase("https://tjtinder.firebaseio.com/regUsers")
+							var regUsers = createFirebase("https://tjtinder.firebaseio.com/regUsers")
 							var updateObjRegUser={}
 							updateObjRegUser[this.yourJSON.id]=true
 							regUsers.update(updateObjRegUser);
@@ -262,7 +272,7 @@
 								console.log("No users shown")
 							}
 
-							var ref = new Firebase("https://tjtinder.firebaseio.com");
+							var ref = createFirebase("https://tjtinder.firebaseio.com");
 
 								
 							// Attach an asynchronous callback to read the data at our posts reference
@@ -309,7 +319,7 @@
 
 							var _this=this
 
-							var ref = new Firebase("https://tjtinder.firebaseio.com");
+							var ref = createFirebase("https://tjtinder.firebaseio.com");
 						// Attach an asynchronous callback to read the data at our posts reference
 						ref.once("value", function(snapshot) {//CHANGING EVERY TIME IT CHANGES
 							var alljson=snapshot.val();
@@ -340,7 +350,7 @@
 
 
 							//add to registered users shown
-							var regUsersShown = new Firebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/regUsersShown")
+							var regUsersShown = createFirebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/regUsersShown")
 
 
 							var updateObjRegUser={}
@@ -355,7 +365,7 @@
 							//add to shown users
 							updatedShown={}
 							updatedShown[_this.id]=true
-							new Firebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/shown").update(updatedShown)
+							createFirebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/shown").update(updatedShown)
 
 						}, function (errorObject) {
 							console.log("The read failed: " + errorObject.code);
@@ -403,7 +413,7 @@
 							var theirLikesUrl="uid/"+them+"/likes"
 							var yourMatchesUrl="uid/"+you+"/matches"
 							var theirMatchesUrl="uid/"+them+"/matches"
-							var ref = new Firebase("https://tjtinder.firebaseio.com/");
+							var ref = createFirebase("https://tjtinder.firebaseio.com/");
 							var yourMatchesRef = ref.child(yourMatchesUrl);
 							var theirMatchesRef = ref.child(theirMatchesUrl);
 							var yourLikesRef = ref.child(yourLikesUrl);
