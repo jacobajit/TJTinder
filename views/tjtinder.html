@@ -325,54 +325,60 @@
 
 							var _this=this
 
-							var ref = createFirebase("https://tjtinder.firebaseio.com");
+							var ref = createFirebase("https://tjtinder.firebaseio.com/regUsers");
 						// Attach an asynchronous callback to read the data at our posts reference
-						ref.once("value", function(snapshot) {//CHANGING EVERY TIME IT CHANGES
-							var alljson=snapshot.val();
-							var regUsers=Object.keys(alljson["regUsers"])
-							if(alljson["uid"][_this.yourJSON.id]!=null){
-								var regUsersShown=Object.keys(alljson["uid"][_this.yourJSON.id]["regUsersShown"])
-							}
-							else{
-								var regUsersShown=[];
-							}
-							console.log("Registed users:")
-							console.log(regUsers)
+                            ref.once("value", function(snapshot) {//CHANGING EVERY TIME IT CHANGES
+                            var alljson=snapshot.val();
+                            console.log("regUsers -> " + JSON.stringify(alljson));
+                            var regUsers=Object.keys(alljson);
+                            createFirebase("https://tjtinder.firebaseio.com/uid/" + _this.yourJSON.id).once("value", function(s2) {
+                                console.log("uid/" + _this.yourJSON.id + " -> " + JSON.stringify(s2.val()));
+                                if(s2.val() != null) {
+                                    var regUsersShown=Object.keys(s2.val()["regUsersShown"])
+                                }
+                                else {
+                                    var regUsersShown=[];
+                                }
+                                console.log("Registed users:")
+                                console.log(regUsers)
 
-							go=false;
-							while(go==false){
-								_this.id = regUsers[Math.floor(Math.random() * regUsers.length)];
-								k=regUsersShown.indexOf(_this.id);
-								if(k==-1){
-									go=true
-								}
-							}
-							
-							_this.profileurl="/api/profile/"+_this.id;
-							_this.imgurl="/api/profile/"+_this.id+"/picture";
-							_this.iddefined=true
-							console.log("Selected id from regUsers:")
-							console.log(_this.id)
+                                go=false;
+                                while(go==false){
+                                    _this.id = regUsers[Math.floor(Math.random() * regUsers.length)];
+                                    k=regUsersShown.indexOf(_this.id);
+                                    if(k==-1){
+                                        go=true
+                                    }
+                                }
 
-
-							//add to registered users shown
-							var regUsersShown = createFirebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/regUsersShown")
-
-
-							var updateObjRegUser={}
-							updateObjRegUser[_this.id]=true
-							console.log("")
-							console.log("Update INFO: ")
-							console.log(updateObjRegUser)
-							console.log("")
-							regUsersShown.update(updateObjRegUser);
+                                _this.profileurl="/api/profile/"+_this.id;
+                                _this.imgurl="/api/profile/"+_this.id+"/picture";
+                                _this.iddefined=true
+                                console.log("Selected id from regUsers:")
+                                console.log(_this.id)
 
 
-							//add to shown users
-							updatedShown={}
-							updatedShown[_this.id]=true
-							createFirebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/shown").update(updatedShown)
+                                //add to registered users shown
+                                var regUsersShown = createFirebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/regUsersShown")
 
+
+                                var updateObjRegUser={}
+                                updateObjRegUser[_this.id]=true
+                                console.log("")
+                                console.log("Update INFO: ")
+                                console.log(updateObjRegUser)
+                                console.log("")
+                                regUsersShown.update(updateObjRegUser);
+
+
+                                //add to shown users
+                                updatedShown={}
+                                updatedShown[_this.id]=true
+                                createFirebase("https://tjtinder.firebaseio.com/uid/"+_this.yourJSON.id+"/shown").update(updatedShown)
+
+                            }, function(err) {
+                                console.log("regUsersShown failed: " + err);
+                            });
 						}, function (errorObject) {
 							console.log("The read failed: " + errorObject.code);
 						});
