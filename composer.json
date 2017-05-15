@@ -1,6 +1,0 @@
-{
-    "require": {
-        "firebase/php-jwt": "^3.0",
-        "firebase/token-generator": "^3.0"
-    }
-}
