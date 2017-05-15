@@ -50,6 +50,11 @@ app.get("/", function(req, res) {
     }
 });
 
+app.get("/logout", function(req, res) {
+    req.session.destroy();
+    res.redirect("/");
+});
+
 app.get("/login", function(req, res) {
     var code = req.query["code"];
     if (!code) {
