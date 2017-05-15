@@ -133,7 +133,7 @@ app.get("/login", function(req, res) {
                 req.session.username = info.ion_username;
                 req.session.name = info.display_name;
 
-                var token = tokenGenerator.createToken({ uid: info.ion_username, id: info.id, sex: info.sex });
+                var token = tokenGenerator.createToken({ uid: info.ion_username, id: ""+info.id, sex: info.sex });
 
                 req.session.firebase_token = token;
                 res.redirect("/");
