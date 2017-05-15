@@ -63,13 +63,11 @@ app.get("/", function(req, res) {
 app.all("/api/*", function(req, res) {
     console.log("API Request: " + req.path + " (" + req.method + ")");
     if (!req.session.access_token) {
-        console.log("Access Token: None");
         res.type("application/json");
         res.write(JSON.stringify({error: "Not Logged In"}));
         res.end();
         return;
     }
-    console.log("Access Token: " + req.session.access_token);
     if (!req.path.startsWith("/api/profile")) {
         res.type("application/json");
         res.write(JSON.stringify({error: "Method Not Allowed"}));
@@ -95,7 +93,7 @@ function apiRequest(path, method, token, callback) {
         }
     }, function(err, resp, body) {
         if (err) {
-            console.log("API Error: " + err);
+            console.error("API Error: " + err);
             callback(JSON.stringify({error: "Server Error"}));
             return;
         }
@@ -126,12 +124,13 @@ app.get("/login", function(req, res) {
             const token = oauth.accessToken.create(result);
             req.session.refresh_token = token.token.refresh_token;
             req.session.access_token = token.token.access_token;
-            console.log("Auth successful! Token: " + JSON.stringify(token));
             apiRequest("/api/profile", "GET", token.token.access_token, function(body, type) {
                 var info = JSON.parse(body);
                 req.session.uid = info.id;
                 req.session.username = info.ion_username;
                 req.session.name = info.display_name;
+
+                console.log("Auth successful! User: " + req.session.username);
 
                 var token = tokenGenerator.createToken({ uid: ""+info.id, username: info.ion_username, sex: info.sex });
 
