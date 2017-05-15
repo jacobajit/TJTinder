@@ -2,6 +2,7 @@ var express = require("express");
 var request = require("request");
 var session = require("express-session");
 var simpleoauth2 = require("simple-oauth2");
+var admin = require("firebase-admin");
 
 var app = express();
 
@@ -10,12 +11,27 @@ var app = express();
 
 var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
+var firebase_auth = process.env.FIREBASE_AUTH;
 
 app.use(session({
     secret: client_secret,
     resave: false,
     saveUninitialized: true
 }));
+
+if (!client_id || !client_secret) {
+    console.warning("No client ID or client secret set!");
+}
+
+if (!firebase_auth) {
+    console.warning("No firebase authentication set!");
+}
+
+
+admin.initializeApp({
+    credential: admin.credential.cert(JSON.parse(firebase_auth)),
+    databaseURL: "https://tjtinder.firebaseio.com"
+});
 
 app.use(express.static("static"));
 app.engine("html", require("ejs").renderFile);
@@ -36,10 +52,6 @@ var login_url = oauth.authorizationCode.authorizeURL({
     scope: "read",
     redirect_uri: ion_redirect_uri
 });
-
-if (!client_id || !client_secret) {
-    console.warning("No client ID or client secret set!");
-}
 
 app.get("/", function(req, res) {
     if (!req.session.access_token) {
@@ -66,29 +78,33 @@ app.all("/api/*", function(req, res) {
         res.end();
         return;
     }
+    apiRequest(req.path, req.method, req.session.access_token, function(out, type) {
+        res.type(type || "application/json");
+        res.write(out);
+        res.end();
+    });
+});
+
+function apiRequest(path, method, token, callback) {
     request({
-        uri: req.path,
+        uri: path,
         baseUrl: "https://ion.tjhsst.edu",
-        method: req.method,
+        method: method,
         encoding: null,
         form: {
             "format": "json",
-            "access_token": req.session.access_token
+            "access_token": token
         }
     }, function(err, resp, body) {
         if (err) {
             console.log("API Error: " + err);
-            res.type("application/json");
-            res.write(JSON.stringify({error: "Server Error"}));
-            res.end();
+            callback(JSON.stringify({error: "Server Error"}));
             return;
         }
-        res.type(resp.headers["content-type"]);
-        res.write(body);
-        res.end();
+        callback(body, resp.headers["content-type"]);
         return;
     });
-});
+}
 
 app.get("/logout", function(req, res) {
     req.session.destroy();
