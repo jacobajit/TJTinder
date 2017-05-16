@@ -1,13 +1,31 @@
 {
   "name": "font-roboto",
-  "homepage": "https://github.com/Polymer/font-roboto",
-  "_release": "10c297a5bf",
-  "_resolution": {
-    "type": "branch",
-    "branch": "master",
-    "commit": "10c297a5bf5d6e48e2c27c9e401161c02e24892a"
+  "version": "1.0.2",
+  "description": "An HTML import for Roboto",
+  "authors": [
+    "The Polymer Authors"
+  ],
+  "keywords": [
+    "font",
+    "roboto"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/PolymerElements/font-roboto.git"
   },
-  "_source": "git://github.com/Polymer/font-roboto.git",
-  "_target": "master",
-  "_originalSource": "Polymer/font-roboto"
+  "main": "roboto.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/PolymerElements/font-roboto/",
+  "ignore": [
+    "/.*"
+  ],
+  "_release": "1.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.2",
+    "commit": "ad31da796c12dfa4a83526afe6ff6190ad29643f"
+  },
+  "_source": "https://github.com/PolymerElements/font-roboto.git",
+  "_target": "^1.0.1",
+  "_originalSource": "PolymerElements/font-roboto"
 }
