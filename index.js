@@ -21,11 +21,11 @@ app.use(session({
 }));
 
 if (!client_id || !client_secret) {
-    console.warning("No client ID or client secret set!");
+    console.warn("No client ID or client secret set!");
 }
 
 if (!firebase_auth && !firebase_secret) {
-    console.warning("No firebase authentication set!");
+    console.warn("No firebase authentication set!");
 }
 
 
