@@ -68,6 +68,17 @@ app.all("/api/*", function(req, res) {
         res.end();
         return;
     }
+    var token = oauth.accessToken.create({
+        "access_token": req.session.access_token,
+        "refresh_token": req.session.refresh_token,
+        "expires_in": req.session.expires_in
+    });
+    if (token.expired()) {
+        token.refresh((err, result) => {
+            token = result;
+            req.session.access_token = token.token.access_token;
+        });
+    }
     if (!req.path.startsWith("/api/profile")) {
         res.type("application/json");
         res.write(JSON.stringify({error: "Method Not Allowed"}));
@@ -124,6 +135,7 @@ app.get("/login", function(req, res) {
             const token = oauth.accessToken.create(result);
             req.session.refresh_token = token.token.refresh_token;
             req.session.access_token = token.token.access_token;
+            req.session.expires_in = token.token.expires_in;
             apiRequest("/api/profile", "GET", token.token.access_token, function(body, type) {
                 var info = JSON.parse(body);
                 req.session.uid = info.id;
