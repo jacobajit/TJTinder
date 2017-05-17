@@ -109,23 +109,23 @@
 
 				<template is="dom-if" if="{{picturedefined}}">
 					
-					<div>
+					<div style="width:100%; margin:0 auto;text-align:center">
 						<!-- Wide card with share menu button -->
 
 
-						<div>
-						  <div>
-						    <h2>{{theirJSON.display_name}}</h2>
+						<div class="demo-card-wide mdl-card mdl-shadow--2dp" style="margin: auto;">
+						  <div class="mdl-card__title">
+						    <h2 class="mdl-card__title-text" style="margin:auto;">{{theirJSON.display_name}}</h2>
 						  </div>
-						  <div>
+						  <div class="mdl-card__supporting-text">
 						    <img src="{{imgObjectUrl}}">
 						  </div>
-						  <div>
+						  <div class="mdl-card__actions mdl-card--border">
 						    
 								<paper-button on-tap="dislike" style="background-color:#FF765A;color: #fff;"> &#10006; </paper-button>
 								<paper-button on-tap="like" style="background-color:#FF765A;color: #fff;"> &#10004; </paper-button>
 						  </div>
-						  <div>
+						  <div class="mdl-card__menu">
 						    							
 						  </div>
 						</div>
