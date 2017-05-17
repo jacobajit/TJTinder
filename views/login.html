@@ -19,24 +19,25 @@
 </head>
 
 <body>
-<nav>
-    <div class="nav-wrapper deep-orange lighten-1">
-        <a href="#" class="brand-logo"><img class="left" src="/tjtinder-icon144.png">TJTinder</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="#">Terms and Conditions</a></li>
-        </ul>
-    </div>
-</nav>
+    <ul id="navbar-dropdown" class="dropdown-content">
+        <li><a href="#">Terms and Conditions</a></li>
+    </ul>
+    <nav>
+        <div class="nav-wrapper deep-orange lighten-1">
+            <a href="#" class="brand-logo"><img class="left" src="/tjtinder-icon144.png">TJTinder</a>
+            <a class="dropdown-button" href="#!" data-activates="navbar-dropdown"><i class="material-icons right">arrow_drop_down</i></a></li>
+        </div>
+    </nav>
 
-<div id="login-div" class="container center">
-    <div class="row">
-        <a href="<%= login_url %>">
-            <button class="btn waves-effect waves-light deep-orange lighten-1">Login with Ion<i class="material-icons right">send</i></button>
-        </a>
+    <div id="login-div" class="container center">
+        <div class="row">
+            <a href="<%= login_url %>">
+                <button class="btn waves-effect waves-light deep-orange lighten-1">Login with Ion<i class="material-icons right">send</i></button>
+            </a>
+        </div>
+        <div class="row">
+            <a href="/faq">Learn more</a>
+        </div>
     </div>
-    <div class="row">
-        <a href="/faq">Learn more</a>
-    </div>
-</div>
 </body>
 </html>
