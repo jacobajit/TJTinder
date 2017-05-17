@@ -65,6 +65,7 @@ app.get("/matches", function(req, res) {
         res.redirect("/");
     }
     else {
+        // TODO: get matches and display to user
         res.render("matches.html", { firebase_token: req.session.firebase_token, userid: req.session.uid });
     }
 });
