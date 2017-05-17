@@ -1,357 +1,49 @@
-<html>
-	<head>
-		<title>TJTinder</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="/webcomponents-lite.min.js"></script>
-		<script src="/require.js"></script>
-		<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
-		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-		<meta name="theme-color" content="#FF765A">
-		<link rel="manifest" href="/manifest.json">
-		<script src="/swregistration.js"></script>
-
-		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-		<link rel="icon" href="/favicon.ico" type="image/x-icon">
-		
-		<link rel="import" href="https://polygit.org/components/polymer/polymer.html">
-		<link rel="import" href="https://polygit.org/components/iron-ajax/iron-ajax.html">
-		<link rel="import" href="https://polygit.org/components/paper-button/paper-button.html">
-		<link rel="import" href="https://polygit.org/components/paper-input/paper-input.html">
-		<link rel="import" href="https://polygit.org/components/paper-card/paper-card.html">
-		<link rel="import" href="https://polygit.org/components/paper-toggle-button/paper-toggle-button.html">
-		<link rel="import" href="https://polygit.org/components/paper-toolbar/paper-toolbar.html">
-		<link rel="import" href="https://polygit.org/components/iron-a11y-keys/iron-a11y-keys.html">
-		<link rel="import" href="https://polygit.org/components/paper-styles/paper-styles.html">
-		<link rel="import" href="https://polygit.org/components/paper-spinner/paper-spinner.html">
-
-		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-		<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-		
-		<style is="custom-style">
-			html{
-				font-family: 'Roboto', sans-serif;
-				font-size: 14px;
-				margin: 0;
-
-			}
-			.pink {
-			  --paper-card-header-color: "#FF765A";
-			}		
-			paper-toggle-button {
-				--paper-toggle-button-label-color:"#FFFFFF";
-			}
-
-			.demo-card-wide.mdl-card {
-			  width: 512px;
-			}
-			.demo-card-wide > .mdl-card__title {
-			  color: #fff;
-			  height: 176px;
-			  background: url('../assets/demos/welcome_card.jpg') center / cover;
-			}
-			.demo-card-wide > .mdl-card__menu {
-			  color: #fff;
-			}
-
-		</style>
-
-
-
-
-
-
-	</head>
-	<body style="background-color: whitesmoke">
-
-
-
-		<!-- ______________________________________________________________ -->
-
-
-
-
-		<dom-module id="app-main">
-
-			<template>
-				<style is="custom-style">
-					html{
-						font-family: 'Roboto', sans-serif;
-						font-size: 14px;
-						margin: 0;
-						padding: 24px;
-					}
-					.pink {
-					  --paper-card-header-color: #FF765A;
-					}		
-					paper-toggle-button {
-						--paper-toggle-button-label-color:#FFFFFF;
-					}
-
-				</style>
-				<template is="dom-if" if="{{readyForProf}}">
-				<iron-ajax auto="" url="/api/profile" headers="{{loginauth}}" handle-as="json" on-response="loadAppMatches" debounce-duration="300" last-response="{{yourJSON}}"></iron-ajax>
-				</template>
-				<template is="dom-if" if="{{iddefined}}">
-
-					<iron-ajax auto="" url="{{profileurl}}" headers="{{loginauth}}" handle-as="json" on-error="pickIdFromAll" on-response="handleResponse" debounce-duration="300" last-response="{{theirJSON}}"></iron-ajax>
-
-					<iron-ajax auto="" url="{{imgurl}}" headers="{{loginauth}}" last-response="{{imgret}}" handle-as="blob" on-error="pickIdFromAll" on-response="handleImgResponse" debounce-duration="300"></iron-ajax>
-				</template>
-				<template is="dom-if" if="{{readyForShownAjax}}">
-
-					<iron-ajax auto="" url="{{shownURL}}" handle-as="json" on-response="shownreceived" debounce-duration="300" last-response="{{shownJSON}}"></iron-ajax>
-				</template>
-				<div style="width:100%; margin:0 auto;text-align:center">
-					<paper-spinner active>...</paper-spinner>
-				</div>
-
-				<template is="dom-if" if="{{picturedefined}}">
-					
-					<div>
-						<!-- Wide card with share menu button -->
-
-
-						<div>
-						  <div>
-						    <h2>{{theirJSON.display_name}}</h2>
-						  </div>
-						  <div>
-						    <img src="{{imgObjectUrl}}">
-						  </div>
-						  <div>
-						    
-								<paper-button on-tap="dislike" style="background-color:#FF765A;color: #fff;"> &#10006; </paper-button>
-								<paper-button on-tap="like" style="background-color:#FF765A;color: #fff;"> &#10004; </paper-button>
-						  </div>
-						  <div>
-						    							
-						  </div>
-						</div>
-						
-
-					</div>
-				</template>
-
-
-
-            </template>
-            <script type="text/javascript">
-                var userid = "<%= userid %>";
-                var firebaseToken = "<%= firebase_token %>";
-            </script>
-            <script type="text/javascript" src="/tjtinder.js"></script>
-		</dom-module>
-
-
-
-		<!-- ______________________________________________________________ -->
-
-
-
-
-		<dom-module id="app-login">
-
-			<template>
-
-				<style is="custom-style">
-					paper-button{
-						margin:0 0em;
-					}
-				</style>
-
-				<paper-input label="Ion Username" value="{{user}}"></paper-input>
-				<iron-a11y-keys id="a11y" target="[[target]]" keys="enter" on-keys-pressed="login"></iron-a11y-keys>
-				<paper-input label="Ion Password" type="password" value="{{pass}}" id="passid"> 
-				</paper-input>
-				<br>
-				<br>
-				<paper-button on-tap="login" style="background-color:#FF765A;color: #fff;width:100%;"> Log In </paper-button>
-				<br>
-				<br>
-				<a href="/faq">Learn more</a>
-			</template>
-
-				<script>
-					window.addEventListener('WebComponentsReady', function(e) {
-						Polymer({
-							is:"app-login",
-
-							properties: {
-
-								target: {
-									type: Object,
-									value: function() {
-										return this.$.passid;
-									}
-								}
-							},
-
-
-							login: function(e){
-								console.log("Logging in...")
-								var beforeEncoding=this.user+":"+this.pass
-
-								var base64=window.btoa(beforeEncoding);
-
-								var authheader="Basic "+base64
-
-
-									//create app-main element while passing in auth attribute
-									var loginauthattr={}
-									loginauthattr["Authorization"]=authheader
-									var parent = document.getElementById("main");
-									var child = document.getElementById("loginid");
-
-									var main = document.createElement("app-main");
-									main.setAttribute("loginauth", JSON.stringify(loginauthattr))
-									main.setAttribute("id", "mainid")
-									
-
-									parent.replaceChild(main,child)
-									
-							}
-
-						});
-					});
-			</script>
-		</dom-module>
-
-
-
-
-		<!-- ______________________________________________________________ -->
-
-
-
-
-
-		<dom-module id="app-matches">
-			<template>
-				<iron-ajax auto="" url="{{matchesurl}}" handle-as="json" on-response="displayResponse" debounce-duration="300" last-response="{{matchesJSON}}"></iron-ajax>
-
-				<template is="dom-if" if="{{respReceived}}">
-					<div style="width:100%; margin:0 auto;text-align:center">
-						<br>
-						<br>
-						<br>
-						<h2>
-							Matches
-						</h2>
-						<template is="dom-repeat" items="{{_toArray(matchesJSON)}}">
-							<span>{{item}}</span><br>
-							
-							<hr>
-						</template>
-					</div>
-				</template>
-
-
-			</template>
-			<script>
-			window.addEventListener('WebComponentsReady', function(e) {
-				Polymer({
-
-					is: 'app-matches',
-
-					properties: {
-						id:{
-							type:Number,
-							notify: true
-
-						},
-						respReceived:{
-							type:Boolean,
-							value:false,
-							notify:true
-						},
-
-						matchesurl:{
-							type:String,
-							notify:true 
-						}
-
-
-					},
-					ready:function(){
-
-						this.matchesurl="https://tjtinder.firebaseio.com/uid/"+this.id+"/matches.json";
-						console.log("Matches url: ");
-						console.log(this.matchesurl);
-
-					},
-
-					displayResponse: function(){
-						this.respReceived=true;
-						console.log("displaying response w matches");
-					},
-
-					_toArray: function(obj) {
-						return Object.keys(obj);
-					}
-
-
-
-				});
-			});
-			</script>
-
-		</dom-module>
-
-
-
-
-
-
-		<!-- ______________________________________________________________ -->
-
-
-
-
-
-		<dom-module id="app-super">
-			<template>
-
-				<paper-toolbar style="background-color:#FF765A">
-				<paper-icon-button icon="arrow-back" onclick="goHome()">
-				</paper-icon-button>
-
-				<div class="title"> TJTinder</div>
-			<!-- matches toggle invisible now -->	<!-- <paper-toggle-button style="--paper-toggle-button-label-color:#FFFFFF" checked="{{showMats}}"><p style="color:white">View Matches</p></paper-toggle-button> -->
-				</paper-toolbar>
-				<br>
-
-
-				<div id="main" style="max-width:330px;margin:100px auto 0 auto;">
-					<app-main id="mainid">
-				</app-main>
-				</div>
-
-				<template is="dom-if" if="{{showMats}}">
-					<div id="matchdiv">
-					</div>
-				</template>
-
-			</template>
-			<script>
-				window.addEventListener('WebComponentsReady', function(e) {
-					Polymer({
-						is: 'app-super'
-					});
-				});
-			</script>
-		</dom-module>
-
-
-
-		<!-- ________________________________________________________________________ -->
-
-
-
-
-		<app-super></app-super>
-
-	</body>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TJTinder</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#FF765A">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="/manifest.json">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css" integrity="sha256-xbQIJkhfOw0Dry1H9lawvXRi9XcqdE8jDBZx1Op/mz8=" crossorigin="anonymous">
+    <link rel="stylesheet" href="/tjtinder.css">
+
+    <script src="/require.js"></script>
+    <script src="/swregistration.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js" integrity="sha256-lVmbGVbzHBkNHCUK0y+z2AyJei/v7jSNYppXTcq2FtU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper deep-orange lighten-1">
+            <a href="#" class="brand-logo">TJTinder</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/matches.html">Matches</a></li>
+                <li><a href="#">Terms and Conditions</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container center main">
+        <div class="card-panel">
+            <div class="profile-name center">{{ theirJSON.display_name}}</div>
+            <img width="250" src="{{ imgObjectUrl }}">
+            <div class="row">
+                <div class="col s6">
+                    <button class="btn waves-effect waves-light deep-orange lighten-1"><i class="material-icons">done</i></button>
+                </div>
+                <div class="col s6">
+                    <button class="btn waves-effect waves-light deep-orange lighten-1"><i class="material-icons">clear</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
