@@ -2,7 +2,7 @@ var express = require("express");
 var request = require("request");
 var session = require("express-session");
 var simpleoauth2 = require("simple-oauth2");
-var FirebaseTokenGenerator = require("firebase-token-generator");
+var firebase = require("firebase");
 
 var app = express();
 
@@ -27,9 +27,6 @@ if (!client_id || !client_secret) {
 if (!firebase_auth && !firebase_secret) {
     console.warn("No firebase authentication set!");
 }
-
-
-var tokenGenerator = new FirebaseTokenGenerator(firebase_secret);
 
 app.use(express.static("static"));
 app.engine("html", require("ejs").renderFile);
@@ -56,27 +53,57 @@ app.get("/", function(req, res) {
         res.render("login.html", { login_url: login_url });
     }
     else {
-        res.render("tjtinder.html", { firebase_token: req.session.firebase_token, userid: req.session.uid });
+        res.render("tjtinder.html", { userid: req.session.uid });
     }
 });
 
 app.get("/matches", function(req, res) {
     if (!req.session.access_token) {
-        res.render("login.html", { login_url: login_url });
+        res.redirect("/");
     }
     else {
-        res.render("matches.html", { firebase_token: req.session.firebase_token, userid: req.session.uid });
+        // TODO: get matches and display to user
+        res.render("matches.html", { userid: req.session.uid });
     }
 });
 
-app.all("/api/*", function(req, res) {
-    console.log("API Request: " + req.path + " (" + req.method + ")");
+function choose(choices) {
+    var index = Math.floor(Math.random() * choices.length);
+    return choices[index];
+}
+
+app.get("/random", function(req, res) {
+    // TODO: get a random id not chosen before
+    var id = choose([32164, 32327, 32215]);
     if (!req.session.access_token) {
         res.type("application/json");
         res.write(JSON.stringify({error: "Not Logged In"}));
         res.end();
         return;
     }
+    checkTokenExpire(req);
+    apiRequest("/api/profile/" + id, req.method, req.session.access_token, function(out, type) {
+        res.type(type || "application/json");
+        res.write(out);
+        res.end();
+    });
+});
+
+app.post("/like", function(req, res) {
+    res.type("application/json");
+    // TODO: process like
+    res.write(JSON.stringify({"info": "You liked this person!"}));
+    res.end();
+});
+
+app.post("/dislike", function(req, res) {
+    res.type("application/json");
+    // TODO: process dislike
+    res.write(JSON.stringify({"info": "You passed on this person!"}));
+    res.end();
+});
+
+function checkTokenExpire(req) {
     var token = oauth.accessToken.create({
         "access_token": req.session.access_token,
         "refresh_token": req.session.refresh_token,
@@ -88,6 +115,17 @@ app.all("/api/*", function(req, res) {
             req.session.access_token = token.token.access_token;
         });
     }
+}
+
+app.all("/api/*", function(req, res) {
+    console.log("API Request: " + req.path + " (" + req.method + ")");
+    if (!req.session.access_token) {
+        res.type("application/json");
+        res.write(JSON.stringify({error: "Not Logged In"}));
+        res.end();
+        return;
+    }
+    checkTokenExpire(req);
     if (!req.path.startsWith("/api/profile")) {
         res.type("application/json");
         res.write(JSON.stringify({error: "Method Not Allowed"}));
@@ -153,9 +191,6 @@ app.get("/login", function(req, res) {
 
                 console.log("Auth successful! User: " + req.session.username);
 
-                var token = tokenGenerator.createToken({ uid: ""+info.id, username: info.ion_username, sex: info.sex });
-
-                req.session.firebase_token = token;
                 res.redirect("/");
             });
         });

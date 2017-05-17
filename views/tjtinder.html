@@ -9,15 +9,20 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="manifest" href="/manifest.json">
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css" integrity="sha256-xbQIJkhfOw0Dry1H9lawvXRi9XcqdE8jDBZx1Op/mz8=" crossorigin="anonymous">
+    <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css" integrity="sha256-xbQIJkhfOw0Dry1H9lawvXRi9XcqdE8jDBZx1Op/mz8=" crossorigin="anonymous">
     <link rel="stylesheet" href="/tjtinder.css">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script src="/require.js"></script>
-    <script src="/swregistration.js"></script>
-    <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js" integrity="sha256-lVmbGVbzHBkNHCUK0y+z2AyJei/v7jSNYppXTcq2FtU=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="//cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/messenger/1.5.0/css/messenger.min.css" integrity="sha256-s9TkqCOAYSX0OL0SFkn9uuNWdDLIXKMUV0ZICMxDBC8=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/messenger/1.5.0/css/messenger-theme-future.min.css" integrity="sha256-m1IZSnXUbZcGUBF1o2+RGqtlRd5COHrl/hSHHjvCL9E=" crossorigin="anonymous" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/messenger/1.5.0/js/messenger.min.js" integrity="sha256-BnQeGKS32Pt/mkLkk742fNXjfLN5/4OOd3L9PAf5d3s=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/messenger/1.5.0/js/messenger-theme-future.min.js" integrity="sha256-bPtXLSYZuomGwSgpsWFQVLtxEvZDKbVR+Oml4HOy090=" crossorigin="anonymous"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js" integrity="sha256-lVmbGVbzHBkNHCUK0y+z2AyJei/v7jSNYppXTcq2FtU=" crossorigin="anonymous"></script>
+    <script src="/tjtinder.js"></script>
 </head>
 
 <body>
@@ -31,17 +36,31 @@
             <a class="dropdown-button right" href="#!" data-activates="navbar-dropdown"><i class="material-icons">arrow_drop_down</i></a>
         </div>
     </nav>
-
     <div class="container center main">
+        <div class="loading">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card-panel">
-            <div class="profile-name center">{{ theirJSON.display_name}}</div>
-            <img width="250" src="{{ imgObjectUrl }}">
+            <div class="profile-name center"></div>
+            <img width="250" class="profile-picture" />
             <div class="row">
                 <div class="col s6">
-                    <button class="btn waves-effect waves-light deep-orange lighten-1"><i class="material-icons">done</i></button>
+                    <button id="like" class="btn waves-effect waves-light deep-orange lighten-1"><i class="material-icons">done</i></button>
                 </div>
                 <div class="col s6">
-                    <button class="btn waves-effect waves-light deep-orange lighten-1"><i class="material-icons">clear</i></button>
+                    <button id="dislike" class="btn waves-effect waves-light deep-orange lighten-1"><i class="material-icons">clear</i></button>
                 </div>
             </div>
         </div>
