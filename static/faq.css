@@ -1,0 +1,35 @@
+nav {
+    line-height: 3.5rem;
+    height: 3.5rem;
+}
+
+.nav-wrapper {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.brand-logo {
+    font-size: 2rem;
+}
+
+.brand-logo img {
+    height: 2rem;
+    margin-top: 0.7rem;
+}
+
+.dropdown-button i {
+    height: inherit !important;
+    line-height: inherit !important;
+}
+
+#navbar-dropdown {
+    width: 14rem !important;
+}
+
+#navbar-dropdown a {
+    color: #039be5;
+}
+
+.main {
+    margin-top: 60px;
+}
