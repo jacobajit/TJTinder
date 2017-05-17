@@ -89,6 +89,18 @@
 						--paper-toggle-button-label-color:#FFFFFF;
 					}
 
+					.demo-card-wide.mdl-card {
+					  width: 512px;
+					}
+					.demo-card-wide > .mdl-card__title {
+					  color: #fff;
+					  height: 176px;
+					  background: url('../assets/demos/welcome_card.jpg') center / cover;
+					}
+					.demo-card-wide > .mdl-card__menu {
+					  color: #fff;
+					}
+
 				</style>
 				<template is="dom-if" if="{{readyForProf}}">
 				<iron-ajax auto="" url="/api/profile" headers="{{loginauth}}" handle-as="json" on-response="loadAppMatches" debounce-duration="300" last-response="{{yourJSON}}"></iron-ajax>
