@@ -2,7 +2,7 @@ var express = require("express");
 var request = require("request");
 var session = require("express-session");
 var simpleoauth2 = require("simple-oauth2");
-var firebase = require("firebase");
+var firebase = require("firebase-admin");
 
 var app = express();
 
@@ -27,6 +27,18 @@ if (!client_id || !client_secret) {
 if (!firebase_auth && !firebase_secret) {
     console.warn("No firebase authentication set!");
 }
+
+firebase.initializeApp({
+    credential: firebase.credential.cert(JSON.parse(firebase_auth)),
+    databaseURL: "https://tjtinder.firebaseio.com"
+});
+
+var db = firebase.database();
+var user_list = [];
+
+db.ref("/regUsers").once("value", function(data) {
+    user_list = Object.keys(data.val());
+});
 
 app.use(express.static("static"));
 app.engine("html", require("ejs").renderFile);
@@ -73,19 +85,32 @@ function choose(choices) {
 }
 
 app.get("/random", function(req, res) {
-    // TODO: get a random id not chosen before
-    var id = choose([32164, 32327, 32215]);
     if (!req.session.access_token) {
         res.type("application/json");
         res.write(JSON.stringify({error: "Not Logged In"}));
         res.end();
         return;
     }
-    checkTokenExpire(req);
-    apiRequest("/api/profile/" + id, req.method, req.session.access_token, function(out, type) {
-        res.type(type || "application/json");
-        res.write(out);
-        res.end();
+    db.ref("/uid/" + req.session.uid + "/shown").once("value", function(data) {
+        var chosen = Object.keys(data.val());
+        if (chosen.length >= user_list.length) {
+            var id = Math.floor(Math.random() * (33503 - 31416)) + 31416;
+        }
+        else {
+            var id = choose(user_list);
+        }
+        if (!req.session.access_token) {
+            res.type("application/json");
+            res.write(JSON.stringify({error: "Not Logged In"}));
+            res.end();
+            return;
+        }
+        checkTokenExpire(req);
+        apiRequest("/api/profile/" + id, req.method, req.session.access_token, function(out, type) {
+            res.type(type || "application/json");
+            res.write(out);
+            res.end();
+        });
     });
 });
 
