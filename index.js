@@ -246,6 +246,7 @@ app.get("/login", function(req, res) {
                 req.session.name = info.display_name;
 
                 db.ref("/regUsers/" + info.id).set({
+                    "username": info.ion_username,
                     "grade": info.graduation_year,
                     "sex": info.sex
                 });
