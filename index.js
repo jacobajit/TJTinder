@@ -245,6 +245,11 @@ app.get("/login", function(req, res) {
                 req.session.username = info.ion_username;
                 req.session.name = info.display_name;
 
+                db.ref("/regUsers/" + info.id).set({
+                    "grade": graduation_year,
+                    "sex": info.sex
+                });
+
                 console.log("Auth successful! User: " + req.session.username);
 
                 res.redirect("/");
