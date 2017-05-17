@@ -17,9 +17,8 @@ nav {
     margin-top: 0.6rem;
 }
 
-.dropdown-button i {
-    height: inherit !important;
-    line-height: inherit !important;
+.side-nav {
+    width: 220px;
 }
 
 #navbar-dropdown {
