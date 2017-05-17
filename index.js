@@ -141,6 +141,7 @@ function doNext(req, res, liked) {
 
     if (liked) {
         db.ref("/uid/" + req.session.uid + "/likes/" + req.body.id).set(true);
+        db.ref("/uid/" + req.body.id + "/otherLikes/" + req.session.uid).set(true);
         db.ref("/uid/" + req.body.id + "/likes/" + req.session.uid).once("value", function(data) {
             if (data.val()) {
                 res.write(JSON.stringify({"success": true, "info": "This person has also liked you!"}));
@@ -257,8 +258,11 @@ app.get("/matches", function(req, res) {
         res.redirect("/");
     }
     else {
-        // TODO: get matches and display to user
-        res.render("matches.html", { userid: req.session.uid });
+        db.ref("/uid/" + req.session.uid + "/likes").once("value", function(data) {
+            db.ref("/uid/" + req.session.uid + "/otherLikes").once("value", function(d2) {
+                res.render("matches.html", { userid: req.session.uid, likes: data.val(), otherLikes: d2.val() });
+            });
+        });
     }
 });
 
