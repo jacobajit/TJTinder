@@ -69,14 +69,43 @@ app.get("/matches", function(req, res) {
     }
 });
 
-app.all("/api/*", function(req, res) {
-    console.log("API Request: " + req.path + " (" + req.method + ")");
+function choose(choices) {
+    var index = Math.floor(Math.random() * choices.length);
+    return choices[index];
+}
+
+app.get("/random", function(req, res) {
+    // TODO: get a random id not chosen before
+    var id = choose([32164, 32327, 32215]);
     if (!req.session.access_token) {
         res.type("application/json");
         res.write(JSON.stringify({error: "Not Logged In"}));
         res.end();
         return;
     }
+    checkTokenExpire(req);
+    apiRequest("/api/profile/" + id, req.method, req.session.access_token, function(out, type) {
+        res.type(type || "application/json");
+        res.write(out);
+        res.end();
+    });
+});
+
+app.post("/like", function(req, res) {
+    res.type("application/json");
+    // TODO: process like
+    res.write(JSON.stringify({"info": "You liked this person!"}));
+    res.end();
+});
+
+app.post("/dislike", function(req, res) {
+    res.type("application/json");
+    // TODO: process dislike
+    res.write(JSON.stringify({"info": "You passed on this person!"}));
+    res.end();
+});
+
+function checkTokenExpire(req) {
     var token = oauth.accessToken.create({
         "access_token": req.session.access_token,
         "refresh_token": req.session.refresh_token,
@@ -88,6 +117,17 @@ app.all("/api/*", function(req, res) {
             req.session.access_token = token.token.access_token;
         });
     }
+}
+
+app.all("/api/*", function(req, res) {
+    console.log("API Request: " + req.path + " (" + req.method + ")");
+    if (!req.session.access_token) {
+        res.type("application/json");
+        res.write(JSON.stringify({error: "Not Logged In"}));
+        res.end();
+        return;
+    }
+    checkTokenExpire(req);
     if (!req.path.startsWith("/api/profile")) {
         res.type("application/json");
         res.write(JSON.stringify({error: "Method Not Allowed"}));
