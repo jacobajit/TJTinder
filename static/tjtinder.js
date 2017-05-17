@@ -5,7 +5,7 @@ function loadMatch() {
         $(".profile-name").text(data.full_name).attr("data-id", data.id);
         $(".profile-picture").off("load").on("load", function() {
             $(".loading").hide();
-            $(".card-panel").show();
+            $(".card-panel").css("display", "block");
         }).attr("src", "/api/profile/" + data.id + "/picture");
     });
 }
