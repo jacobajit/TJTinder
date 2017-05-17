@@ -3,6 +3,7 @@ var request = require("request");
 var session = require("express-session");
 var simpleoauth2 = require("simple-oauth2");
 var firebase = require("firebase-admin");
+var bodyParser = require("body-parser");
 
 var app = express();
 
@@ -41,6 +42,10 @@ db.ref("/regUsers").once("value", function(data) {
 });
 
 app.use(express.static("static"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.engine("html", require("ejs").renderFile);
 
 var oauth = simpleoauth2.create({
@@ -115,18 +120,53 @@ app.get("/random", function(req, res) {
 });
 
 app.post("/like", function(req, res) {
-    res.type("application/json");
-    // TODO: process like
-    res.write(JSON.stringify({"info": "You liked this person!"}));
-    res.end();
+    doNext(req, res, true);
 });
 
 app.post("/dislike", function(req, res) {
-    res.type("application/json");
-    // TODO: process dislike
-    res.write(JSON.stringify({"info": "You passed on this person!"}));
-    res.end();
+    doNext(req, res, false);
 });
+
+function doNext(req, res, liked) {
+    res.type("application/json");
+    if (!req.session.access_token) {
+        res.write(JSON.stringify({error: "Not Logged In"}));
+        res.end();
+        return;
+    }
+    if (!req.body.id) {
+        res.write(JSON.stringify({error: "No ID Given"}));
+        res.end();
+        return;
+    }
+
+    if (/\D/.test(req.body.id)) {
+        res.write(JSON.stringify({error: "Invalid ID!"}));
+        res.end();
+        return;
+    }
+
+    res.type("application/json");
+    db.ref("/uid/" + req.session.uid + "/shown/" + req.body.id).set(true);
+
+    if (liked) {
+        db.ref("/uid/" + req.session.uid + "/likes/" + req.body.id).set(true);
+        db.ref("/uid/" + req.body.id + "/likes/" + req.session.uid).once("value", function(data) {
+            if (data.val()) {
+                res.write(JSON.stringify({"success": true, "info": "This person has also liked you!"}));
+                res.end();
+            }
+            else {
+                res.write(JSON.stringify({"success": true}));
+                res.end();
+            }
+        });
+    }
+    else {
+        res.write(JSON.stringify({"success": true}));
+        res.end();
+    }
+}
 
 function checkTokenExpire(req) {
     var token = oauth.accessToken.create({
