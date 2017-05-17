@@ -60,6 +60,15 @@ app.get("/", function(req, res) {
     }
 });
 
+app.get("/matches", function(req, res) {
+    if (!req.session.access_token) {
+        res.render("login.html", { login_url: login_url });
+    }
+    else {
+        res.render("matches.html", { firebase_token: req.session.firebase_token, userid: req.session.uid });
+    }
+});
+
 app.all("/api/*", function(req, res) {
     console.log("API Request: " + req.path + " (" + req.method + ")");
     if (!req.session.access_token) {
