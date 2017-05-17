@@ -2,7 +2,7 @@ var express = require("express");
 var request = require("request");
 var session = require("express-session");
 var simpleoauth2 = require("simple-oauth2");
-var FirebaseTokenGenerator = require("firebase-token-generator");
+var firebase = require("firebase");
 
 var app = express();
 
@@ -27,9 +27,6 @@ if (!client_id || !client_secret) {
 if (!firebase_auth && !firebase_secret) {
     console.warn("No firebase authentication set!");
 }
-
-
-var tokenGenerator = new FirebaseTokenGenerator(firebase_secret);
 
 app.use(express.static("static"));
 app.engine("html", require("ejs").renderFile);
@@ -56,7 +53,7 @@ app.get("/", function(req, res) {
         res.render("login.html", { login_url: login_url });
     }
     else {
-        res.render("tjtinder.html", { firebase_token: req.session.firebase_token, userid: req.session.uid });
+        res.render("tjtinder.html", { userid: req.session.uid });
     }
 });
 
@@ -66,7 +63,7 @@ app.get("/matches", function(req, res) {
     }
     else {
         // TODO: get matches and display to user
-        res.render("matches.html", { firebase_token: req.session.firebase_token, userid: req.session.uid });
+        res.render("matches.html", { userid: req.session.uid });
     }
 });
 
@@ -194,9 +191,6 @@ app.get("/login", function(req, res) {
 
                 console.log("Auth successful! User: " + req.session.username);
 
-                var token = tokenGenerator.createToken({ uid: ""+info.id, username: info.ion_username, sex: info.sex });
-
-                req.session.firebase_token = token;
                 res.redirect("/");
             });
         });
