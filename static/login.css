@@ -17,17 +17,18 @@ nav {
     margin-top: 0.6rem;
 }
 
-.dropdown-button i {
+.side-nav {
+    width: 220px;
+}
+
+nav .button-collapse {
     height: inherit !important;
     line-height: inherit !important;
 }
 
-#navbar-dropdown {
-    width: 14rem !important;
-}
-
-#navbar-dropdown a {
-    color: #039be5;
+nav .button-collapse i {
+    height: inherit !important;
+    line-height: inherit !important;
 }
 
 #login-div {

@@ -14,21 +14,29 @@
     <link rel="stylesheet" href="/matches.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script src="/require.js"></script>
     <script src="/swregistration.js"></script>
     <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js" integrity="sha256-lVmbGVbzHBkNHCUK0y+z2AyJei/v7jSNYppXTcq2FtU=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $(".button-collapse").sideNav();
+        });
+    </script>
 </head>
 
 <body>
-    <ul id="navbar-dropdown" class="dropdown-content">
-        <li><a href="/faq">FAQ</a></li>
-        <li><a href="/terms">Terms and Conditions</a></li>
-    </ul>
     <nav>
         <div class="nav-wrapper deep-orange lighten-1">
             <a href="/" class="brand-logo"><img class="left" src="/headerLogoWhite.png">TJTinder</a>
-            <a class="dropdown-button right" href="#!" data-activates="navbar-dropdown"><i class="material-icons">arrow_drop_down</i></a>
+            <a href="#" data-activates="mobile-side-nav" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/faq">FAQ</a></li>
+                <li><a href="/terms">Terms and Conditions</a></li>
+            </ul>
+            <ul id="mobile-side-nav" class="side-nav">
+                <li><a href="/faq">FAQ</a></li>
+                <li><a href="/terms">Terms and Conditions</a></li>
+            </ul>
         </div>
     </nav>
 
