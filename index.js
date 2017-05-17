@@ -101,11 +101,16 @@ app.get("/random", function(req, res) {
         return;
     }
     db.ref("/uid/" + req.session.uid + "/shown").once("value", function(data) {
-        var chosen = Object.keys(data.val());
-        if (chosen.length >= user_list.length) {
-            var id = Math.floor(Math.random() * (33503 - 31416)) + 31416;
+        if(data.val()!=null){
+            var chosen = Object.keys(data.val());
+            if (chosen.length >= user_list.length) {
+                var id = Math.floor(Math.random() * (33503 - 31416)) + 31416;
+            }
+            else {
+                var id = choose(user_list);
+            }
         }
-        else {
+        else{
             var id = choose(user_list);
         }
         if (!req.session.access_token) {
