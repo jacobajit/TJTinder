@@ -1,127 +1,44 @@
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-		<title>TJTinder</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="webcomponents-lite.min.js"></script>
-		<script src="require.js"></script>
-		<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
-		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-		<meta name="theme-color" content="#FF765A">
-		<link rel="manifest" href="manifest.json">
-		<script src="swregistration.js"> 
-		</script>
+    <title>TJTinder</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#FF765A">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
 
-		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-		<link rel="icon" href="/favicon.ico" type="image/x-icon">
-		
-		<link rel="import" href="https://polygit.org/components/polymer/polymer.html">
-		<link rel="import" href="https://polygit.org/components/paper-button/paper-button.html">
-		<link rel="import" href="https://polygit.org/components/paper-toolbar/paper-toolbar.html">
-		<link rel="import" href="https://polygit.org/components/iron-a11y-keys/iron-a11y-keys.html">
-		<link rel="import" href="https://polygit.org/components/paper-styles/paper-styles.html">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css" integrity="sha256-xbQIJkhfOw0Dry1H9lawvXRi9XcqdE8jDBZx1Op/mz8=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/login.css">
 
+    <script src="swregistration.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+</head>
 
-		
-		<style is="custom-style">
-			html{
-				font-family: 'Roboto', sans-serif;
-				font-size: 14px;
-				margin: 0;
+<body>
+<nav>
+    <div class="nav-wrapper row deep-orange lighten-1">
+        <div class="col s12">
+            <a href="#" class="brand-logo">TJTinder</a>
+        </div>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="#">Terms and Conditions</a></li>
+        </ul>
+    </div>
+</nav>
 
-			}
-			.pink {
-			  --paper-card-header-color: "#FF765A";
-			}		
-			paper-toggle-button {
-				--paper-toggle-button-label-color:"#FFFFFF";
-			}
-
-			.demo-card-wide.mdl-card {
-			  width: 512px;
-			}
-			.demo-card-wide > .mdl-card__title {
-			  color: #fff;
-			  height: 176px;
-			  background: url('../assets/demos/welcome_card.jpg') center / cover;
-			}
-			.demo-card-wide > .mdl-card__menu {
-			  color: #fff;
-			}
-
-		</style>
-
-
-
-
-
-
-	</head>
-	<body>
-		<dom-module id="app-login">
-
-			<template>
-
-
-				<paper-button style="background-color:#FF765A;color: #fff;width:100%;"> <a href="<%= login_url %>" style="color: white; text-decoration: none;">Log In with Ion</a> </paper-button>
-				<br>
-				<br>
-				<a href="/faq">Learn more</a>
-			</template>
-
-				<script>
-					window.addEventListener('WebComponentsReady', function(e) {
-						Polymer({
-							is:"app-login",
-
-							properties: {
-
-								target: {
-									type: Object,
-									value: function() {
-										return this.$.passid;
-									}
-								}
-							},
-
-
-
-						});
-					});
-			</script>
-		</dom-module>
-
-		<dom-module id="app-super">
-			<template>
-
-				<paper-toolbar style="background-color:#FF765A">
-				<paper-icon-button icon="arrow-back" onclick="goHome()">
-				</paper-icon-button>
-
-				<div class="title"> TJTinder</div>
-		<!-- 	matches toggle invisible now	<paper-toggle-button style="--paper-toggle-button-label-color:#FFFFFF" checked="{{showMats}}"><p style="color:white">View Matches</p></paper-toggle-button> -->
-				</paper-toolbar>
-				<br>
-
-
-				<div id="main" style="max-width:330px;margin:100px auto 0 auto;">
-					<app-login id="loginid">
-					</app-login>
-				</div>
-
-
-
-			</template>
-			<script>
-				window.addEventListener('WebComponentsReady', function(e) {
-					Polymer({
-						is: 'app-super'
-					});
-				});
-			</script>
-		</dom-module>
-	<app-super>
-	</app-super>
-	</body>
+<div id="login-div" class="container center">
+    <div class="row">
+        <a href="<%= login_url %>">
+            <button class="btn waves-effect waves-light deep-orange lighten-1">Login with Ion<i class="material-icons right">send</i></button>
+        </a>
+    </div>
+    <div class="row">
+        <a href="/faq">Learn more</a>
+    </div>
+</div>
+</body>
 </html>
