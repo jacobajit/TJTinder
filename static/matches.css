@@ -34,12 +34,12 @@ nav {
     margin-top: 60px;
 }
 
-#matches {
+#matches, #likes {
     width: 350px;
     margin-left: auto;
     margin-right: auto;
 }
 
-#matches .collection-item {
+#matches .collection-item, #likes .collection-item {
     color: #039be5;
 }

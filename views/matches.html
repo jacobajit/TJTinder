@@ -33,9 +33,25 @@
     </nav>
 
     <div class="container center main">
-        <h1>Matches</h1>
+        <h3>Matches</h3>
         <div id="matches" class="collection">
-            <a href="#" class="collection-item">Bob</a>
+        <% if (otherLikes && likes) { %>
+        <% Object.keys(likes).forEach(function(item) { %>
+        <% if (likes[item]) { %>
+        <a href="https://ion.tjhsst.edu/profile/<%= item %>" target="_blank" class="collection-item"><%= item %></a>
+        <% } %>
+        <% }); %>
+        <% } %>
+        </div>
+        <h3>Likes</h3>
+        <div id="likes" class="collection">
+            <% if (likes) { %>
+            <% Object.keys(likes).forEach(function(item) { %>
+            <a href="https://ion.tjhsst.edu/profile/<%= item %>" target="_blank" class="collection-item"><%= item %></a>
+            <% }); %>
+            <% } else { %>
+            <span class="collection-item">You have not liked anyone yet.</span>
+            <% } %>
         </div>
     </div>
 </body>
