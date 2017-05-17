@@ -21,12 +21,14 @@ nav {
     width: 220px;
 }
 
-#navbar-dropdown {
-    width: 14rem !important;
+nav .button-collapse {
+    height: inherit !important;
+    line-height: inherit !important;
 }
 
-#navbar-dropdown a {
-    color: #039be5;
+nav .button-collapse i {
+    height: inherit !important;
+    line-height: inherit !important;
 }
 
 .main {
