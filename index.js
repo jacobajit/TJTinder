@@ -4,6 +4,7 @@ var session = require("express-session");
 var simpleoauth2 = require("simple-oauth2");
 var firebase = require("firebase-admin");
 var bodyParser = require("body-parser");
+var redisStore = require("connect-redis")(session);
 
 var app = express();
 
@@ -14,12 +15,25 @@ var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
 var firebase_auth = process.env.FIREBASE_AUTH;
 var firebase_secret = process.env.FIREBASE_SECRET;
+var redis_url = process.env.REDISCLOUD_URL;
 
-app.use(session({
-    secret: client_secret,
-    resave: false,
-    saveUninitialized: true
-}));
+if (redis_url) {
+    app.use(session({
+        store: new redisStore({
+            url: redis_url
+        }),
+        secret: client_secret,
+        resave: false,
+        saveUninitialized: true
+    }));
+}
+else {
+    app.use(session({
+        secret: client_secret,
+        resave: false,
+        saveUninitialized: true
+    }));
+}
 
 if (!client_id || !client_secret) {
     console.warn("No client ID or client secret set!");
