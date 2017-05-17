@@ -69,16 +69,6 @@ app.get("/", function(req, res) {
     }
 });
 
-app.get("/matches", function(req, res) {
-    if (!req.session.access_token) {
-        res.redirect("/");
-    }
-    else {
-        // TODO: get matches and display to user
-        res.render("matches.html", { userid: req.session.uid });
-    }
-});
-
 function choose(choices) {
     var index = Math.floor(Math.random() * choices.length);
     return choices[index];
@@ -222,8 +212,22 @@ app.get("/login", function(req, res) {
     }
 });
 
+app.get("/matches", function(req, res) {
+    if (!req.session.access_token) {
+        res.redirect("/");
+    }
+    else {
+        // TODO: get matches and display to user
+        res.render("matches.html", { userid: req.session.uid });
+    }
+});
+
 app.get("/faq", function(req, res) {
     res.render("faq.html");
+});
+
+app.get("/terms", function(req, res) {
+    res.render("terms-and-conditions.html");
 });
 
 var port = process.env.PORT;
