@@ -158,7 +158,7 @@ function doNext(req, res, liked) {
         db.ref("/uid/" + req.body.id + "/otherLikes/" + req.session.uid).set(true);
         db.ref("/uid/" + req.body.id + "/likes/" + req.session.uid).once("value", function(data) {
             if (data.val()) {
-                res.write(JSON.stringify({"success": true}));
+                res.write(JSON.stringify({"success": true, "info": "This person has also liked you!"}));
                 res.end();
             }
             else {
