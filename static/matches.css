@@ -5,6 +5,7 @@ nav {
 
 .nav-wrapper {
     padding-left: 10px;
+    padding-right: 10px;
 }
 
 .brand-logo {
@@ -14,6 +15,19 @@ nav {
 .brand-logo img {
     height: 2rem;
     margin-top: 0.7rem;
+}
+
+.dropdown-button i {
+    height: inherit !important;
+    line-height: inherit !important;
+}
+
+#navbar-dropdown {
+    width: 14rem !important;
+}
+
+#navbar-dropdown a {
+    color: #039be5;
 }
 
 .main {
