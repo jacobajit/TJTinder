@@ -11,6 +11,7 @@ function loadMatch() {
 }
 
 $(document).ready(function() {
+    $(".button-collapse").sideNav();
     loadMatch();
 
     $("#like").click(function(e) {
