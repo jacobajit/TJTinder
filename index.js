@@ -101,7 +101,7 @@ app.get("/random", function(req, res) {
         return;
     }
     db.ref("/uid/" + req.session.uid + "/shown").once("value", function(data) {
-        if(data.val()!=null){
+        if (data.val() != null) {
             var chosen = Object.keys(data.val());
             if (chosen.length >= user_list.length) {
                 var id = Math.floor(Math.random() * (33503 - 31416)) + 31416;
@@ -110,7 +110,7 @@ app.get("/random", function(req, res) {
                 var id = choose(user_list);
             }
         }
-        else{
+        else {
             var id = choose(user_list);
         }
         if (!req.session.access_token) {
@@ -265,6 +265,7 @@ app.get("/login", function(req, res) {
                 req.session.name = info.display_name;
 
                 db.ref("/regUsers/" + info.id).set({
+                    "name": info.display_name,
                     "username": info.ion_username,
                     "grade": info.graduation_year,
                     "sex": info.sex
