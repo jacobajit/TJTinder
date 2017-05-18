@@ -2,6 +2,10 @@ function loadMatch() {
     $(".card-panel").hide();
     $(".loading").show();
     $.get("/random", function(data) {
+        if (data.error) {
+            loadMatch();
+            return;
+        }
         $(".profile-name").text(data.full_name).attr("data-id", data.id);
         $(".profile-picture").off("load").on("load", function() {
             $(".loading").hide();
