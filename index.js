@@ -227,7 +227,7 @@ app.get("/fix", function(req, res) {
                     if (users[user].otherLikes) {
                         var otherLikes = Object.keys(users[user].otherLikes);
                         for (var id in otherLikes) {
-                            var otherLike = likes[id];
+                            var otherLike = otherLikes[id];
                             if (otherLike < 100) {
                                 db.ref("/uid/" + user + "/otherLikes").child(otherLike).delete();
                                 count++;
