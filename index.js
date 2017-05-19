@@ -213,6 +213,7 @@ app.get("/fix", function(req, res) {
             db.ref("/uid").once("value", function(data) {
                 var users = data.val();
                 var count = 0;
+                var other_count = 0;
                 for (var user in users) {
                     if (users[user].likes) {
                         var likes = Object.keys(users[user].likes);
@@ -228,14 +229,14 @@ app.get("/fix", function(req, res) {
                         var otherLikes = Object.keys(users[user].otherLikes);
                         for (var id in otherLikes) {
                             var otherLike = otherLikes[id];
-                            if (otherLike < 100) {
-                                db.ref("/uid/" + user + "/otherLikes").child(otherLike).delete();
-                                count++;
+                            if (!users[otherLike] || !users[otherLike].likes || !(user in users[otherLike].likes)) {
+                                db.ref("/uid/" + user + "/otherLikes").child(otherLike).remove();
+                                other_count++;
                             }
                         }
                     }
                 }
-                res.write(JSON.stringify({"fixed": count}));
+                res.write(JSON.stringify({"fixed_add": count, "fixed_remove": other_count}));
                 res.end();
             });
         }
