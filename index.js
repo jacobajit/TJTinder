@@ -382,7 +382,9 @@ app.get("/login", function(req, res) {
                     "name": info.display_name,
                     "username": info.ion_username,
                     "grade": info.graduation_year,
-                    "sex": info.sex
+                    "sex": info.sex,
+                    "preferred_sex": info.sex == "M" ? "F" : "M",
+                    "preferred_grade": info.graduation_year
                 });
 
                 console.log("Auth successful! User: " + req.session.username);
