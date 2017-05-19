@@ -40,6 +40,9 @@ function loadMatch() {
     getMatch(function(data) {
         if (data.detail) {
             Messenger().error(data.detail);
+            if (data.detail == "Authentication credentials were not provided.") {
+                window.location.href = "/logout";
+            }
             return;
         }
         if (data.error) {
