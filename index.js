@@ -245,22 +245,28 @@ function getPercentMatches(callback) {
         var total_other_likes = 0;
         for (var user in users) {
             var flag = false;
-            if (!users[user].likes || !users[user].otherLikes) {
+            if (!users[user].likes && !users[user].otherLikes) {
                 continue;
             }
-            var likes = Object.keys(users[user].likes);
-            var otherLikes = Object.keys(users[user].otherLikes);
-            total_likes += likes.length;
-            total_other_likes += otherLikes.length;
-            var otherSet = new Set(otherLikes);
-            for (var item in likes) {
-                if (otherSet.has(likes[item])) {
-                    flag = true;
-                    break;
-                }
+            if (users[user].likes) {
+                var likes = Object.keys(users[user].likes);
+                total_likes += likes.length;
             }
-            if (flag) {
-                matches++;
+            if (users[user].otherLikes) {
+                var otherLikes = Object.keys(users[user].otherLikes);
+                total_other_likes += otherLikes.length;
+            }
+            if (users[user].likes && users[user].otherLikes) {
+                var otherSet = new Set(otherLikes);
+                for (var item in likes) {
+                    if (otherSet.has(likes[item])) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag) {
+                    matches++;
+                }
             }
         }
         var total = Object.keys(users).length;
