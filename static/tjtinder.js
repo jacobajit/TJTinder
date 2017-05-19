@@ -1,12 +1,24 @@
 var preload = [];
+var preloadImages = [];
+
+function preloadImage(src) {
+    var img = new Image();
+    img.src = src;
+    preloadImages.push(img);
+}
 
 function doPreload(num) {
     if (preload.length >= num) {
         return;
     }
     $.get("/random", function(data) {
-        preload.push(data);
-        doPreload(num);
+        if (!data.error) {
+            preload.push(data);
+            preloadImage("/api/profile/" + data.id + "/picture");
+        }
+        if (!data.detail) {
+            doPreload(num);
+        }
     });
 }
 
