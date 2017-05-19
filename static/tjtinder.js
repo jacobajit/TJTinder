@@ -22,6 +22,8 @@ function doPreload(num) {
         if (!data.detail) {
             doPreload(num);
         }
+    }).fail(function() {
+        Messenger().error("Failed to preload match!");
     });
 }
 
@@ -32,6 +34,8 @@ function getMatch(callback) {
     else {
         $.get("/random", function(data) {
             callback(data);
+        }).fail(function() {
+            Messenger().error("Failed to load match!");
         });
     }
     doPreload(5);
