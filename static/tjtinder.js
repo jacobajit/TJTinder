@@ -1,7 +1,35 @@
+var preload = [];
+
+function doPreload(num) {
+    if (preload.length >= num) {
+        return;
+    }
+    $.get("/random", function(data) {
+        preload.push(data);
+        doPreload(num);
+    });
+}
+
+function getMatch(callback) {
+    if (preload.length) {
+        callback(preload.shift());
+    }
+    else {
+        $.get("/random", function(data) {
+            callback(data);
+        });
+    }
+    doPreload(10);
+}
+
 function loadMatch() {
     $(".card-panel").hide();
     $(".loading").show();
-    $.get("/random", function(data) {
+    getMatch(function(data) {
+        if (data.detail) {
+            Messenger().error(data.detail);
+            return;
+        }
         if (data.error) {
             loadMatch();
             return;
