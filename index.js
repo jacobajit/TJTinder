@@ -93,10 +93,17 @@ function choose(choices) {
     return choices[index];
 }
 
-function selectUser(shown, prefs) {
-    if (shown != null) {
-        var chosen = Object.keys(shown);
+function selectUser(userData, prefs) {
+    if (userData != null && userData.shown != null) {
+        var chosen = Object.keys(userData.shown);
         var chosen_set = new Set(chosen);
+        if (userData.otherLikes) {
+            var otherLikes = Object.keys(userData.otherLikes);
+            var not_other_liked = otherLikes.filter(x => !chosen_set.has(x));
+            if (not_other_liked.length && Math.random() < 0.5) {
+                return choose(not_other_liked);
+            }
+        }
         if (chosen.length >= user_list.length) {
             return Math.floor(Math.random() * (33503 - 31416)) + 31416;
         }
@@ -118,7 +125,7 @@ app.get("/random", function(req, res) {
         return;
     }
     db.ref("/regUsers/" + req.session.uid).once("value", function(d2) {
-        db.ref("/uid/" + req.session.uid + "/shown").once("value", function(data) {
+        db.ref("/uid/" + req.session.uid).once("value", function(data) {
             var id = selectUser(data.val(), d2.val());
             if (!req.session.access_token) {
                 res.type("application/json");
