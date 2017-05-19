@@ -93,6 +93,21 @@ function choose(choices) {
     return choices[index];
 }
 
+function selectUser(shown, prefs) {
+    if (shown != null) {
+        var chosen = Object.keys(shown);
+        if (chosen.length >= user_list.length) {
+            return Math.floor(Math.random() * (33503 - 31416)) + 31416;
+        }
+        else {
+            return choose(user_list);
+        }
+    }
+    else {
+        return choose(user_list);
+    }
+}
+
 app.get("/random", function(req, res) {
     if (!req.session.access_token) {
         res.type("application/json");
@@ -100,30 +115,21 @@ app.get("/random", function(req, res) {
         res.end();
         return;
     }
-    db.ref("/uid/" + req.session.uid + "/shown").once("value", function(data) {
-        if (data.val() != null) {
-            var chosen = Object.keys(data.val());
-            if (chosen.length >= user_list.length) {
-                var id = Math.floor(Math.random() * (33503 - 31416)) + 31416;
+    db.ref("/regUsers/" + req.session.uid).once("value", function(d2) {
+        db.ref("/uid/" + req.session.uid + "/shown").once("value", function(data) {
+            var id = selectUser(data.val(), d2.val());
+            if (!req.session.access_token) {
+                res.type("application/json");
+                res.write(JSON.stringify({error: "Not Logged In"}));
+                res.end();
+                return;
             }
-            else {
-                var id = choose(user_list);
-            }
-        }
-        else {
-            var id = choose(user_list);
-        }
-        if (!req.session.access_token) {
-            res.type("application/json");
-            res.write(JSON.stringify({error: "Not Logged In"}));
-            res.end();
-            return;
-        }
-        checkTokenExpire(req);
-        apiRequest("/api/profile/" + id, req.method, req.session.access_token, function(out, type) {
-            res.type(type || "application/json");
-            res.write(out);
-            res.end();
+            checkTokenExpire(req);
+            apiRequest("/api/profile/" + id, req.method, req.session.access_token, function(out, type) {
+                res.type(type || "application/json");
+                res.write(out);
+                res.end();
+            });
         });
     });
 });
