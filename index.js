@@ -225,6 +225,13 @@ app.get("/fix", function(req, res) {
                             count++;
                         }
                     }
+                    var otherLikes = Object.keys(users[user].otherLikes);
+                    for (var id in otherLikes) {
+                        var otherLike = likes[id];
+                        if (otherLike < 100) {
+                            db.ref("/uid/" + user + "/otherLikes").child(otherLike).delete();
+                        }
+                    }
                 }
                 res.write(JSON.stringify({"fixed": count}));
                 res.end();
