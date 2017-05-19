@@ -100,7 +100,7 @@ function selectUser(userData, prefs) {
         if (userData.otherLikes) {
             var otherLikes = Object.keys(userData.otherLikes);
             var not_other_liked = otherLikes.filter(x => !chosen_set.has(x));
-            if (not_other_liked.length && Math.random() < 0.5) {
+            if (not_other_liked.length && Math.random() < 0.33) {
                 return choose(not_other_liked);
             }
         }
