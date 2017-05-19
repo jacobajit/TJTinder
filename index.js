@@ -239,7 +239,7 @@ app.get("/fix", function(req, res) {
 
 function getPercentMatches(callback) {
     db.ref("/").once("value", function(data) {
-        var users = data.val().users;
+        var users = data.val().uid;
         var matches = 0;
         var total_likes = 0;
         var total_other_likes = 0;
@@ -264,13 +264,14 @@ function getPercentMatches(callback) {
             }
         }
         var total = Object.keys(users).length;
+        var registered = Object.keys(data.val().regUsers).length;
         callback({
             "matches": matches,
             "likes": total_likes,
             "other_likes": total_other_likes,
             "total": total,
-            "registered": Object.keys(data.val().regUsers).length,
-            "match_percentage": matches/total*100
+            "registered": registered,
+            "match_percentage": matches/registered*100
         });
     });
 }
