@@ -398,9 +398,11 @@ app.get("/matches", function(req, res) {
         res.redirect("/");
     }
     else {
-        db.ref("/uid/" + req.session.uid + "/likes").once("value", function(data) {
-            db.ref("/uid/" + req.session.uid + "/otherLikes").once("value", function(d2) {
-                res.render("matches.html", { userid: req.session.uid, likes: data.val(), otherLikes: d2.val() });
+        db.ref("/admin/" + req.session.uid).once("value", function(d3) {
+            db.ref("/uid/" + req.session.uid + "/likes").once("value", function(data) {
+                db.ref("/uid/" + req.session.uid + "/otherLikes").once("value", function(d2) {
+                    res.render("matches.html", { userid: req.session.uid, likes: data.val(), otherLikes: d2.val(), is_admin: !!d3.val() });
+                });
             });
         });
     }
