@@ -31,7 +31,7 @@ function getMatch(callback) {
             callback(data);
         });
     }
-    doPreload(10);
+    doPreload(5);
 }
 
 function loadMatch() {
