@@ -37,6 +37,7 @@ nav .button-collapse i {
 
 #matches, #likes {
     width: 350px;
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
 }
