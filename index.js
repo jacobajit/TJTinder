@@ -96,10 +96,12 @@ function choose(choices) {
 function selectUser(shown, prefs) {
     if (shown != null) {
         var chosen = Object.keys(shown);
+        var chosen_set = new Set(chosen);
         if (chosen.length >= user_list.length) {
             return Math.floor(Math.random() * (33503 - 31416)) + 31416;
         }
         else {
+            var not_shown = user_list.filter(x => !chosen_set.has(x));
             return choose(user_list);
         }
     }
