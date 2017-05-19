@@ -45,3 +45,8 @@ nav .button-collapse i {
 #matches .collection-item, #likes .collection-item {
     color: #039be5;
 }
+
+.divider {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
