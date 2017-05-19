@@ -214,22 +214,24 @@ app.get("/fix", function(req, res) {
                 var users = data.val();
                 var count = 0;
                 for (var user in users) {
-                    if (!users[user].likes) {
-                        continue;
-                    }
-                    var likes = Object.keys(users[user].likes);
-                    for (var id in likes) {
-                        var like = likes[id];
-                        if (!users[like] || !users[like].otherLikes || !(user in users[like].otherLikes)) {
-                            db.ref("/uid/" + like + "/otherLikes/" + user).set(true);
-                            count++;
+                    if (users[user].likes) {
+                        var likes = Object.keys(users[user].likes);
+                        for (var id in likes) {
+                            var like = likes[id];
+                            if (!users[like] || !users[like].otherLikes || !(user in users[like].otherLikes)) {
+                                db.ref("/uid/" + like + "/otherLikes/" + user).set(true);
+                                count++;
+                            }
                         }
                     }
-                    var otherLikes = Object.keys(users[user].otherLikes);
-                    for (var id in otherLikes) {
-                        var otherLike = likes[id];
-                        if (otherLike < 100) {
-                            db.ref("/uid/" + user + "/otherLikes").child(otherLike).delete();
+                    if (users[user].otherLikes) {
+                        var otherLikes = Object.keys(users[user].otherLikes);
+                        for (var id in otherLikes) {
+                            var otherLike = likes[id];
+                            if (otherLike < 100) {
+                                db.ref("/uid/" + user + "/otherLikes").child(otherLike).delete();
+                                count++;
+                            }
                         }
                     }
                 }
