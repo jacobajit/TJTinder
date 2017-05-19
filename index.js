@@ -178,6 +178,102 @@ function doNext(req, res, liked) {
     }
 }
 
+app.get("/stats", function(req, res) {
+    res.type("application/json");
+    if (!req.session.access_token) {
+        res.write(JSON.stringify({error: "Not Logged In"}));
+        res.end();
+        return;
+    }
+
+    db.ref("/admin/" + req.session.uid).once("value", function(data) {
+        if (data.val()) {
+            getPercentMatches(function(val) {
+                res.write(JSON.stringify(val, null, "\t"));
+                res.end();
+            });
+        }
+        else {
+            res.write(JSON.stringify({error: "Permission Denied"}));
+            res.end();
+        }
+    });
+});
+
+app.get("/fix", function(req, res) {
+    res.type("application/json");
+    if (!req.session.access_token) {
+        res.write(JSON.stringify({error: "Not Logged In"}));
+        res.end();
+        return;
+    }
+
+    db.ref("/admin/" + req.session.uid).once("value", function(d2) {
+        if (d2.val()) {
+            db.ref("/uid").once("value", function(data) {
+                var users = data.val();
+                var count = 0;
+                for (var user in users) {
+                    if (!users[user].likes) {
+                        continue;
+                    }
+                    var likes = Object.keys(users[user].likes);
+                    for (var id in likes) {
+                        var like = likes[id];
+                        if (!users[like] || !users[like].otherLikes || !(user in users[like].otherLikes)) {
+                            db.ref("/uid/" + like + "/otherLikes/" + user).set(true);
+                            count++;
+                        }
+                    }
+                }
+                res.write(JSON.stringify({"fixed": count}));
+                res.end();
+            });
+        }
+        else {
+            res.write(JSON.stringify({error: "Access Denied"}));
+            res.end();
+        }
+    });
+});
+
+function getPercentMatches(callback) {
+    db.ref("/uid").once("value", function(data) {
+        var users = data.val();
+        var matches = 0;
+        var total_likes = 0;
+        var total_other_likes = 0;
+        for (var user in users) {
+            var flag = false;
+            if (!users[user].likes || !users[user].otherLikes) {
+                continue;
+            }
+            var likes = Object.keys(users[user].likes);
+            var otherLikes = Object.keys(users[user].otherLikes);
+            total_likes += likes.length;
+            total_other_likes += otherLikes.length;
+            var otherSet = new Set(otherLikes);
+            for (var item in likes) {
+                if (otherSet.has(likes[item])) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag) {
+                matches++;
+            }
+        }
+        var total = Object.keys(users).length;
+        callback({
+            "matches": matches,
+            "likes": total_likes,
+            "other_likes": total_other_likes,
+            "total": total,
+            "match_percentage": matches/total*100
+        });
+    });
+}
+
 function checkTokenExpire(req) {
     var token = oauth.accessToken.create({
         "access_token": req.session.access_token,
