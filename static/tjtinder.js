@@ -4,6 +4,9 @@ var preloadImages = [];
 function preloadImage(src) {
     var img = new Image();
     img.src = src;
+    while (preloadImages.length > 20) {
+        preloadImages.shift();
+    }
     preloadImages.push(img);
 }
 
