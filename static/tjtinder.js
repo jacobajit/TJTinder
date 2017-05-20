@@ -86,4 +86,7 @@ $(document).ready(function() {
             loadMatch();
         });
     });
+    $(".profile-picture").error(function() {
+        Messenger().error("Failed to load user profile picture!");
+    });
 });
