@@ -52,7 +52,7 @@
 
     <div class="container center main">
         <h3>Matches</h3>
-        <% if (is_admin) { %>
+        <% if (is_admin || past_release_date) { %>
             <div id="matches" class="collection">
                 <% if (otherLikes && likes) { %>
                 <% Object.keys(likes).forEach(function(item) { %>

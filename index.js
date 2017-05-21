@@ -6,6 +6,8 @@ var firebase = require("firebase-admin");
 var bodyParser = require("body-parser");
 var redisStore = require("connect-redis")(session);
 
+var release_date = new Date("May 21, 2017 21:00:00");
+
 var app = express();
 
 // client type: confidential
@@ -418,7 +420,13 @@ app.get("/matches", function(req, res) {
         db.ref("/admin/" + req.session.uid).once("value", function(d3) {
             db.ref("/uid/" + req.session.uid + "/likes").once("value", function(data) {
                 db.ref("/uid/" + req.session.uid + "/otherLikes").once("value", function(d2) {
-                    res.render("matches.html", { userid: req.session.uid, likes: data.val(), otherLikes: d2.val(), is_admin: !!d3.val() });
+                    res.render("matches.html", {
+                        userid: req.session.uid,
+                        likes: data.val(),
+                        otherLikes: d2.val(),
+                        is_admin: !!d3.val(),
+                        past_release_date: new Date() > release_date
+                    });
                 });
             });
         });
